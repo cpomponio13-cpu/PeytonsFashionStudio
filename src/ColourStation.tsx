@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './ColourStation.css'
 
 type Colour={name:string;hex:string}
 const basics:Colour[]=[{name:'Red',hex:'#ef5350'},{name:'Yellow',hex:'#f5cf45'},{name:'Blue',hex:'#4385df'},{name:'Black',hex:'#35313b'},{name:'White',hex:'#fffdf8'}]
