@@ -1,4 +1,5 @@
 import { defaultKeriLook, keriLayers, type KeriLook } from './keriAssets'
+import './KeriMannequin.css'
 
 type Props={ look?:KeriLook; className?:string }
 
