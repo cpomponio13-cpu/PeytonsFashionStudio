@@ -1,76 +1,21 @@
 import { useState } from 'react'
 import './App.css'
 
-type Screen = 'home' | 'design' | 'wardrobe' | 'colours' | 'features' | 'recipes' | 'gallery'
-type Tab = 'clothing' | 'colour' | 'details'
-
-const clothes = [
-  { id: 'tshirt', name: 'T-Shirt', style: 'Casual • Sporty' },
-  { id: 'blouse', name: 'Blouse', style: 'Elegant • Classic' },
-  { id: 'jeans', name: 'Jeans', style: 'Casual • Classic' },
-  { id: 'skirt', name: 'Pleated Skirt', style: 'Classic • Playful' },
-  { id: 'summer', name: 'Summer Dress', style: 'Casual • Playful' },
-  { id: 'flowing', name: 'Flowing Dress', style: 'Elegant • Glamorous' },
-]
-const colours = [
-  { name: 'Red', value: '#e74c3c' }, { name: 'Yellow', value: '#f5c542' },
-  { name: 'Blue', value: '#3d7edb' }, { name: 'Black', value: '#222222' },
-  { name: 'White', value: '#ffffff' },
-]
-const details = [
-  { id: 'trim', name: 'Contrast Trim', icon: '〰️' }, { id: 'pockets', name: 'Pockets', icon: '▢' },
-  { id: 'belt', name: 'Belt', icon: '➖' }, { id: 'stripes', name: 'Stripes', icon: '▥' },
-  { id: 'floral', name: 'Floral Print', icon: '🌸' }, { id: 'sequins', name: 'Sequins', icon: '✦' },
-]
-
-function Mannequin({ colour = '#8b589e', outfit = 'flowing', features = [] as string[] }) {
-  return <div className="mannequin designer-mannequin">
-    <div className="mannequin-head"/><div className="mannequin-neck"/>
-    <div className={`designer-outfit outfit-${outfit}`} style={{ '--outfit-colour': colour } as React.CSSProperties}>
-      <div className="outfit-top"/><div className="outfit-bottom"/>
-      {features.includes('trim') && <div className="design-trim"/>}
-      {features.includes('belt') && <div className="design-belt"/>}
-      {features.includes('pockets') && <div className="design-pockets"><i/><i/></div>}
-      {features.includes('stripes') && <div className="design-pattern stripes-pattern"/>}
-      {features.includes('floral') && <div className="design-pattern floral-pattern">🌸 🌼<br/>🌺 🌸</div>}
-      {features.includes('sequins') && <div className="design-pattern sequin-pattern">✦ ✧ ✦<br/>✧ ✦ ✧</div>}
-    </div>
-  </div>
-}
-
-function App() {
-  const [screen, setScreen] = useState<Screen>('home')
-  const [tab, setTab] = useState<Tab>('clothing')
-  const [clothing, setClothing] = useState(clothes[5])
-  const [colour, setColour] = useState(colours[2])
-  const [features, setFeatures] = useState<string[]>([])
-
-  const toggleFeature = (id: string) => setFeatures(current => current.includes(id) ? current.filter(x => x !== id) : current.length < 3 ? [...current, id] : current)
-
-  if (screen === 'design') {
-    return <main className="app-shell"><header className="top-bar"><button className="home-button" onClick={() => setScreen('home')}>← Studio</button><div className="brand"><span className="brand-icon">✦</span>Design Studio</div><div className="star-count">⭐ 0</div></header>
-      <section className="designer-page">
-        <div className="designer-challenge"><span>🎯</span><div><small>YOUR CHALLENGE</small><strong>Create a Look You Love!</strong></div><button title="What does this mean?">💡</button></div>
-        <div className="designer-workspace">
-          <div className="designer-summary"><small>YOUR DESIGN</small><h2>{clothing.name}</h2><p>{clothing.style}</p><div className="summary-colour"><i style={{background: colour.value}}/> {colour.name}</div><p>{features.length ? features.map(id => details.find(d => d.id === id)?.name).join(' • ') : 'Add some details ✨'}</p></div>
-          <div className="designer-mirror"><div className="mirror-shine"/><Mannequin colour={colour.value} outfit={clothing.id} features={features}/></div>
-          <div className="designer-tip"><span>✨</span><p>Tap the choices below and watch your design change.</p></div>
-        </div>
-        <div className="design-drawer">
-          <div className="drawer-tabs"><button className={tab === 'clothing' ? 'active' : ''} onClick={() => setTab('clothing')}>👗<span>Clothing</span></button><button className={tab === 'colour' ? 'active' : ''} onClick={() => setTab('colour')}>🎨<span>Colour</span></button><button className={tab === 'details' ? 'active' : ''} onClick={() => setTab('details')}>✨<span>Details</span><b>{features.length}/3</b></button></div>
-          <div className="drawer-options">
-            {tab === 'clothing' && clothes.map(item => <button key={item.id} className={`choice-tile ${clothing.id === item.id ? 'selected' : ''}`} onClick={() => setClothing(item)}><span className={`clothing-icon icon-${item.id}`}>👗</span><strong>{item.name}</strong></button>)}
-            {tab === 'colour' && colours.map(item => <button key={item.name} className={`colour-choice ${colour.name === item.name ? 'selected' : ''}`} onClick={() => setColour(item)}><i style={{background:item.value}}/><strong>{item.name}</strong></button>)}
-            {tab === 'details' && details.map(item => <button key={item.id} className={`choice-tile detail-choice ${features.includes(item.id) ? 'selected' : ''}`} onClick={() => toggleFeature(item.id)}><span>{item.icon}</span><strong>{item.name}</strong></button>)}
-          </div>
-        </div>
-        <div className="designer-actions"><button className="reset-design" onClick={() => {setClothing(clothes[5]);setColour(colours[2]);setFeatures([])}}>↻ Start Again</button><button className="finish-design">✨ Finish Design</button></div>
-      </section></main>
-  }
-
-  if (screen !== 'home') return <main className="app-shell"><header className="top-bar"><div className="brand"><span className="brand-icon">✦</span>Fashion Studio</div><div className="designer">Designer</div><div className="star-count">⭐ 0</div></header><section className="placeholder-page"><div className="placeholder-icon">✨</div><h1>{screen}</h1><p>We're building this part of the studio soon.</p><button className="back-button" onClick={() => setScreen('home')}>← Back to Studio</button></section></main>
-
-  return <main className="app-shell"><header className="top-bar"><div className="brand"><span className="brand-icon">✦</span>Fashion Studio</div><div className="designer">Designer</div><div className="star-count">⭐ 0</div></header><section className="studio"><div className="welcome"><p className="eyebrow">WELCOME, DESIGNER</p><h1>Your Fashion Studio</h1><p className="welcome-text">Create outfits, discover colours and build your own fashion collection.</p></div><div className="studio-floor"><button className="studio-area wardrobe-area" onClick={() => setScreen('wardrobe')}><span className="area-icon">👗</span><span className="area-title">Wardrobe</span><span className="area-description">Your clothing collection</span></button><button className="studio-area colours-area" onClick={() => setScreen('colours')}><span className="area-icon">🎨</span><span className="area-title">Colour Station</span><span className="area-description">Colours & mixing</span></button><button className="studio-area features-area" onClick={() => setScreen('features')}><span className="area-icon">✨</span><span className="area-title">Feature Wall</span><span className="area-description">Details & decorations</span></button><button className="studio-area recipes-area" onClick={() => setScreen('recipes')}><span className="area-icon">📖</span><span className="area-title">Recipe Book</span><span className="area-description">Your colour discoveries</span></button><button className="studio-area gallery-area" onClick={() => setScreen('gallery')}><span className="area-icon">🖼️</span><span className="area-title">Fashion Gallery</span><span className="area-description">Your finished designs</span></button><button className="design-studio" onClick={() => setScreen('design')}><div className="mirror"><div className="mirror-shine"/><Mannequin/></div><div className="design-studio-label"><span className="design-icon">🪞</span><div><strong>Design Studio</strong><small>Tap the mannequin to start designing</small></div><span className="arrow">→</span></div></button></div><div className="first-challenge"><div className="challenge-icon">🎯</div><div className="challenge-copy"><span>YOUR FIRST CHALLENGE</span><strong>Create a Look You Love!</strong><p>No rules for your first design.</p></div><button className="challenge-button" onClick={() => setScreen('design')}>Start Designing <span>→</span></button></div></section><footer className="studio-footer"><span>👗 Create</span><span>🎨 Experiment</span><span>✨ Discover</span><span>💖 Have fun</span></footer></main>
-}
-
+type Screen='home'|'design'|'wardrobe'|'colours'|'features'|'recipes'|'gallery'; type Tab='clothing'|'colour'|'details'
+const clothes=[{id:'tshirt',name:'T-Shirt',style:'Casual • Sporty'},{id:'blouse',name:'Blouse',style:'Elegant • Classic'},{id:'jeans',name:'Jeans',style:'Casual • Classic'},{id:'skirt',name:'Pleated Skirt',style:'Classic • Playful'},{id:'summer',name:'Summer Dress',style:'Casual • Playful'},{id:'flowing',name:'Flowing Dress',style:'Elegant • Glamorous'}]
+const colours=[{name:'Red',value:'#e74c3c'},{name:'Yellow',value:'#f5c542'},{name:'Blue',value:'#3d7edb'},{name:'Black',value:'#222222'},{name:'White',value:'#ffffff'}]
+const details=[{id:'trim',name:'Contrast Trim',icon:'〰️'},{id:'pockets',name:'Pockets',icon:'▢'},{id:'belt',name:'Belt',icon:'🎀'},{id:'stripes',name:'Stripes',icon:'▥'},{id:'floral',name:'Floral Print',icon:'🌸'},{id:'sequins',name:'Sequins',icon:'✦'}]
+function Garment({id,colour='#d98aaa',features=[]}:{id:string,colour?:string,features?:string[]}){const common={fill:colour,stroke:'#654b66',strokeWidth:2,strokeLinejoin:'round' as const};return <svg className="garment-art" viewBox="0 0 220 300" aria-label={id}><defs><linearGradient id={`shade-${id}`} x1="0" x2="1"><stop stopColor="#fff" stopOpacity=".32"/><stop offset=".48" stopColor="#fff" stopOpacity="0"/><stop offset="1" stopColor="#3b2442" stopOpacity=".16"/></linearGradient><pattern id="stripe" width="18" height="18" patternUnits="userSpaceOnUse"><path d="M0 4h18" stroke="#fff" strokeOpacity=".7" strokeWidth="6"/></pattern></defs>
+{id==='tshirt'&&<path {...common} d="M65 55 88 42q22 14 44 0l23 13 31 30-22 25-18-15v135H74V95l-18 15-22-25z"/>}
+{id==='blouse'&&<><path {...common} d="M70 55 91 42h38l21 13 31 35-22 22-18-20v138H79V92l-18 20-22-22z"/><path d="M91 43l19 30 19-30M110 73v155" fill="none" stroke="#fff" strokeOpacity=".75" strokeWidth="3"/><circle cx="110" cy="95" r="3" fill="#fff"/><circle cx="110" cy="120" r="3" fill="#fff"/></>}
+{id==='jeans'&&<><path {...common} d="M72 42h76l7 80-13 142h-43l11-115-11 115H56L65 122z"/><path d="M70 68h76M110 44v105M78 78q10 18 28 7M142 78q-10 18-28 7" fill="none" stroke="#fff" strokeOpacity=".45" strokeWidth="3"/></>}
+{id==='skirt'&&<><path {...common} d="M75 58h70l30 184H45z"/><path d="M76 70 62 232M93 70 85 238M110 70v170M127 70l8 168M144 70l14 162" fill="none" stroke="#fff" strokeOpacity=".38" strokeWidth="3"/></>}
+{(id==='summer'||id==='flowing')&&<><path {...common} d={id==='summer'?'M88 43h44l13 40-18 42 42 118H51l42-118-18-42z':'M88 42h44l16 48-21 37 62 137H31l62-137-21-37z'}/><path d="M93 45q17 24 34 0M95 126 72 250M110 126v130M125 126l23 124" fill="none" stroke="#fff" strokeOpacity=".35" strokeWidth="3"/></>}
+<path d="M40 35h140v235H40z" fill={`url(#shade-${id})`} opacity=".45"/>
+{features.includes('stripes')&&<path d="M48 80h124v160H48z" fill="url(#stripe)" opacity=".8"/>}{features.includes('floral')&&<g className="svg-florals" fontSize="22"><text x="72" y="115">✿</text><text x="125" y="145">❀</text><text x="85" y="190">❁</text><text x="140" y="220">✿</text></g>}{features.includes('sequins')&&<g fill="#fff6b5"><circle cx="85" cy="105" r="5"/><circle cx="130" cy="125" r="4"/><circle cx="105" cy="165" r="5"/><circle cx="145" cy="195" r="4"/><circle cx="78" cy="220" r="4"/></g>}{features.includes('belt')&&<path d="M72 125h76v12H72z" fill="#f1a4b9" stroke="#654b66" strokeWidth="2"/>}{features.includes('trim')&&<path d="M55 244q55 12 110 0" fill="none" stroke="#69be28" strokeWidth="8"/>}{features.includes('pockets')&&<><path d="M66 165h28v34H66zM126 165h28v34h-28z" fill="none" stroke="#fff" strokeWidth="3"/></>}</svg>}
+function Mannequin({colour='#d98aaa',outfit='flowing',features=[] as string[]}){return <div className="fashion-model"><div className="model-hair"/><div className="model-head"><span>•‿•</span></div><div className="model-neck"/><div className="model-arm left-arm"/><div className="model-arm right-arm"/><div className="model-legs"><i/><i/></div><div className="model-garment"><Garment id={outfit} colour={colour} features={features}/></div></div>}
+function App(){const[screen,setScreen]=useState<Screen>('home'),[tab,setTab]=useState<Tab>('clothing'),[clothing,setClothing]=useState(clothes[5]),[colour,setColour]=useState(colours[2]),[features,setFeatures]=useState<string[]>([]);const toggleFeature=(id:string)=>setFeatures(c=>c.includes(id)?c.filter(x=>x!==id):c.length<3?[...c,id]:c)
+if(screen==='design')return <main className="app-shell"><header className="top-bar"><button className="home-button" onClick={()=>setScreen('home')}>← Studio</button><div className="brand"><span className="brand-icon">✦</span>Peyton's Fashion Studio</div><div className="star-count">⭐ 0</div></header><section className="designer-page"><div className="designer-challenge"><span>🎯</span><div><small>YOUR CHALLENGE</small><strong>Create a Look You Love!</strong></div><button>💡</button></div><div className="designer-workspace"><div className="designer-summary"><small>CURRENT LOOK</small><h2>{clothing.name}</h2><p>{clothing.style}</p><div className="summary-colour"><i style={{background:colour.value}}/> {colour.name}</div><p>{features.length?features.map(id=>details.find(d=>d.id===id)?.name).join(' • '):'Add some details ✨'}</p></div><div className="designer-mirror"><div className="mirror-shine"/><Mannequin colour={colour.value} outfit={clothing.id} features={features}/></div><div className="designer-tip"><span>♡</span><strong>Design • Create • Express</strong><p>Make it completely yours.</p></div></div><div className="design-drawer"><div className="drawer-tabs"><button className={tab==='clothing'?'active':''} onClick={()=>setTab('clothing')}>👗 <span>Clothing</span></button><button className={tab==='colour'?'active':''} onClick={()=>setTab('colour')}>🎨 <span>Colour</span></button><button className={tab==='details'?'active':''} onClick={()=>setTab('details')}>✨ <span>Details</span><b>{features.length}/3</b></button></div><div className="drawer-options">{tab==='clothing'&&clothes.map(item=><button key={item.id} className={`choice-tile garment-choice ${clothing.id===item.id?'selected':''}`} onClick={()=>setClothing(item)}><Garment id={item.id}/><strong>{item.name}</strong></button>)}{tab==='colour'&&colours.map(item=><button key={item.name} className={`colour-choice ${colour.name===item.name?'selected':''}`} onClick={()=>setColour(item)}><i style={{background:item.value}}/><strong>{item.name}</strong></button>)}{tab==='details'&&details.map(item=><button key={item.id} className={`choice-tile detail-choice ${features.includes(item.id)?'selected':''}`} onClick={()=>toggleFeature(item.id)}><span>{item.icon}</span><strong>{item.name}</strong></button>)}</div></div><div className="designer-actions"><button className="reset-design" onClick={()=>{setClothing(clothes[5]);setColour(colours[2]);setFeatures([])}}>↻ Start Again</button><button className="finish-design">✓ Finish Design</button></div></section></main>
+if(screen!=='home')return <main className="app-shell"><header className="top-bar"><div className="brand">✦ Peyton's Fashion Studio</div><div/><div className="star-count">⭐ 0</div></header><section className="placeholder-page"><div className="placeholder-icon">✨</div><h1>{screen}</h1><p>We're building this part of the studio soon.</p><button className="back-button" onClick={()=>setScreen('home')}>← Back to Studio</button></section></main>
+return <main className="app-shell"><header className="top-bar"><div className="brand"><span className="brand-icon">✦</span>Peyton's Fashion Studio</div><div className="designer">Designer Peyton</div><div className="star-count">⭐ 0</div></header><section className="studio"><div className="welcome"><p className="eyebrow">WELCOME, DESIGNER</p><h1>Your Fashion Studio</h1><p className="welcome-text">Create outfits, discover colours and build your own fashion collection.</p></div><div className="studio-floor"><button className="studio-area wardrobe-area" onClick={()=>setScreen('wardrobe')}><span className="area-icon">👗</span><span className="area-title">Wardrobe</span><span className="area-description">Your clothing collection</span></button><button className="studio-area colours-area" onClick={()=>setScreen('colours')}><span className="area-icon">🎨</span><span className="area-title">Colour Station</span><span className="area-description">Colours & mixing</span></button><button className="studio-area features-area" onClick={()=>setScreen('features')}><span className="area-icon">✨</span><span className="area-title">Feature Wall</span><span className="area-description">Details & decorations</span></button><button className="studio-area recipes-area" onClick={()=>setScreen('recipes')}><span className="area-icon">📖</span><span className="area-title">Recipe Book</span></button><button className="studio-area gallery-area" onClick={()=>setScreen('gallery')}><span className="area-icon">🖼️</span><span className="area-title">Fashion Gallery</span></button><button className="design-studio" onClick={()=>setScreen('design')}><div className="mirror"><div className="mirror-shine"/><Mannequin/></div><div className="design-studio-label"><span className="design-icon">🪞</span><div><strong>Design Studio</strong><small>Tap the model to start designing</small></div><span className="arrow">→</span></div></button></div><div className="first-challenge"><div className="challenge-icon">🎯</div><div className="challenge-copy"><span>YOUR FIRST CHALLENGE</span><strong>Create a Look You Love!</strong><p>No rules for your first design.</p></div><button className="challenge-button" onClick={()=>setScreen('design')}>Start Designing →</button></div></section><footer className="studio-footer"><span>👗 Create</span><span>🎨 Experiment</span><span>✨ Discover</span><span>💖 Have fun</span></footer></main>}
 export default App
