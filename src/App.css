@@ -1,0 +1,575 @@
+:root {
+  font-family:
+    Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #30243d;
+  background: #f7f2fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+}
+
+button:focus-visible {
+  outline: 3px solid #8b63c7;
+  outline-offset: 3px;
+}
+
+.app-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 10% 15%, rgba(255, 255, 255, 0.9), transparent 24%),
+    radial-gradient(circle at 90% 20%, rgba(255, 224, 244, 0.65), transparent 25%),
+    linear-gradient(145deg, #f8f1fb 0%, #fff8f5 48%, #f1eafb 100%);
+}
+
+.top-bar {
+  min-height: 76px;
+  padding: 14px 28px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.82);
+  border-bottom: 1px solid rgba(74, 45, 91, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #4b2865;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: white;
+  background: linear-gradient(135deg, #8b55bb, #d66da9);
+  box-shadow: 0 5px 14px rgba(108, 62, 137, 0.25);
+}
+
+.designer {
+  font-size: 0.9rem;
+  color: #76657f;
+}
+
+.star-count {
+  justify-self: end;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fff8dd;
+  border: 1px solid #f2df9a;
+  color: #765d20;
+}
+
+.home-button {
+  justify-self: start;
+  border: 0;
+  background: transparent;
+  color: #69477c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.studio {
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0 34px;
+}
+
+.welcome {
+  text-align: center;
+  max-width: 650px;
+  margin: 0 auto 38px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: #a04f91;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.welcome h1 {
+  margin: 0;
+  color: #432653;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
+}
+
+.welcome-text {
+  max-width: 560px;
+  margin: 18px auto 0;
+  color: #776a80;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.studio-floor {
+  min-height: 610px;
+  display: grid;
+  grid-template-columns: 1fr 1.45fr 1fr;
+  grid-template-rows: 1fr 1.8fr 1fr;
+  gap: 18px;
+  padding: 20px;
+  border-radius: 34px;
+  background: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(93, 60, 111, 0.12);
+  box-shadow: 0 22px 70px rgba(73, 43, 90, 0.1);
+}
+
+.studio-area {
+  border: 0;
+  border-radius: 24px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 8px 24px rgba(70, 44, 83, 0.08);
+}
+
+.studio-area:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 32px rgba(70, 44, 83, 0.14);
+}
+
+.area-icon {
+  font-size: 2.5rem;
+  margin-bottom: 9px;
+}
+
+.area-title {
+  color: #4b3158;
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.area-description {
+  margin-top: 5px;
+  color: #806f87;
+  font-size: 0.78rem;
+}
+
+.wardrobe-area {
+  background: linear-gradient(145deg, #fbe3ed, #f9d7e7);
+}
+
+.colours-area {
+  background: linear-gradient(145deg, #e6e0fa, #ddd4f6);
+}
+
+.features-area {
+  background: linear-gradient(145deg, #fff0ca, #ffe8b1);
+}
+
+.recipes-area {
+  background: linear-gradient(145deg, #e3f1df, #d8ebd1);
+}
+
+.gallery-area {
+  background: linear-gradient(145deg, #dcebf5, #d4e7f1);
+}
+
+.design-studio {
+  grid-column: 2;
+  grid-row: 1 / 4;
+  position: relative;
+  min-height: 500px;
+  border: 0;
+  border-radius: 28px;
+  padding: 18px;
+  cursor: pointer;
+  background: linear-gradient(160deg, #f7edf7, #eadff2);
+  box-shadow: inset 0 0 0 1px rgba(91, 57, 111, 0.08);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.design-studio:hover {
+  transform: scale(1.012);
+  box-shadow:
+    inset 0 0 0 1px rgba(91, 57, 111, 0.08),
+    0 18px 42px rgba(74, 45, 91, 0.15);
+}
+
+.mirror {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  width: min(72%, 300px);
+  height: calc(100% - 150px);
+  transform: translateX(-50%);
+  border-radius: 48% 48% 42% 42%;
+  background: linear-gradient(150deg, #e9e0f0, #faf7fc);
+  border: 9px solid #d2bfdc;
+  box-shadow:
+    inset 0 0 35px rgba(130, 98, 143, 0.08),
+    0 12px 28px rgba(68, 40, 83, 0.12);
+  overflow: hidden;
+}
+
+.mirror-shine {
+  position: absolute;
+  top: 8%;
+  left: 12%;
+  width: 28%;
+  height: 52%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.55);
+  transform: rotate(16deg);
+}
+
+.mannequin {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 150px;
+  height: 320px;
+  transform: translateX(-50%);
+}
+
+.mannequin-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 55px;
+  height: 65px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 45% 45%;
+  background: #d8a993;
+}
+
+.mannequin-neck {
+  position: absolute;
+  top: 52px;
+  left: 50%;
+  width: 25px;
+  height: 32px;
+  transform: translateX(-50%);
+  background: #d8a993;
+}
+
+.mannequin-body {
+  position: absolute;
+  top: 76px;
+  left: 50%;
+  width: 120px;
+  height: 125px;
+  transform: translateX(-50%);
+  border-radius: 38% 38% 18% 18%;
+  background: linear-gradient(150deg, #a96fc0, #774b91);
+}
+
+.mannequin-skirt {
+  position: absolute;
+  top: 178px;
+  left: 50%;
+  width: 145px;
+  height: 125px;
+  transform: translateX(-50%);
+  clip-path: polygon(22% 0, 78% 0, 100% 100%, 0 100%);
+  background: linear-gradient(150deg, #c17db0, #8b589e);
+}
+
+.design-studio-label {
+  position: absolute;
+  bottom: 18px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  box-shadow: 0 8px 22px rgba(72, 42, 88, 0.12);
+}
+
+.design-icon {
+  font-size: 1.7rem;
+}
+
+.design-studio-label strong {
+  display: block;
+  color: #4b3158;
+}
+
+.design-studio-label small {
+  display: block;
+  margin-top: 3px;
+  color: #87778d;
+}
+
+.arrow {
+  margin-left: auto;
+  font-size: 1.4rem;
+  color: #7b4f91;
+}
+
+.first-challenge {
+  margin-top: 28px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(102, 64, 119, 0.1);
+  box-shadow: 0 12px 35px rgba(74, 45, 91, 0.08);
+}
+
+.challenge-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  background: #fff0bf;
+  font-size: 1.6rem;
+}
+
+.challenge-copy {
+  flex: 1;
+}
+
+.challenge-copy span {
+  display: block;
+  margin-bottom: 4px;
+  color: #a05a8e;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.challenge-copy strong {
+  display: block;
+  color: #493050;
+  font-size: 1.1rem;
+}
+
+.challenge-copy p {
+  margin: 5px 0 0;
+  color: #7d6d83;
+  font-size: 0.86rem;
+}
+
+.challenge-button,
+.back-button {
+  border: 0;
+  border-radius: 14px;
+  padding: 13px 18px;
+  color: white;
+  background: linear-gradient(135deg, #7e4d9a, #a15c92);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(105, 62, 125, 0.22);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.challenge-button:hover,
+.back-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 24px rgba(105, 62, 125, 0.28);
+}
+
+.challenge-button span {
+  margin-left: 8px;
+}
+
+.studio-footer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  padding: 18px 20px 30px;
+  color: #796b81;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.placeholder-page {
+  width: min(680px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 90px 0;
+  text-align: center;
+}
+
+.placeholder-icon {
+  font-size: 5rem;
+  margin-bottom: 15px;
+}
+
+.placeholder-page h1 {
+  margin: 0;
+  color: #452a54;
+  font-size: 3rem;
+}
+
+.placeholder-page > p {
+  color: #786a7f;
+  font-size: 1.05rem;
+}
+
+.coming-soon {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin: 35px 0;
+  padding: 20px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  text-align: left;
+}
+
+.coming-soon > span {
+  font-size: 1.5rem;
+}
+
+.coming-soon strong {
+  color: #4c3258;
+}
+
+.coming-soon p {
+  margin: 5px 0 0;
+  color: #7c6d83;
+  line-height: 1.5;
+}
+
+@media (max-width: 850px) {
+  .top-bar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .designer {
+    display: none;
+  }
+
+  .studio-floor {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .design-studio {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+    min-height: 520px;
+  }
+
+  .wardrobe-area {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .colours-area {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .features-area,
+  .recipes-area,
+  .gallery-area {
+    min-height: 150px;
+  }
+
+  .first-challenge {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .challenge-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .top-bar {
+    padding: 12px 16px;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+  }
+
+  .star-count {
+    padding: 7px 10px;
+  }
+
+  .studio {
+    width: min(100% - 24px, 1180px);
+    padding-top: 30px;
+  }
+
+  .welcome h1 {
+    font-size: 2.5rem;
+  }
+
+  .studio-floor {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 24px;
+  }
+
+  .design-studio {
+    grid-column: 1 / 3;
+    min-height: 440px;
+  }
+
+  .mirror {
+    width: 72%;
+  }
+
+  .mannequin {
+    transform: translateX(-50%) scale(0.82);
+    transform-origin: bottom center;
+  }
+
+  .area-icon {
+    font-size: 2rem;
+  }
+
+  .area-title {
+    font-size: 0.9rem;
+  }
+
+  .area-description {
+    font-size: 0.7rem;
+  }
+
+  .first-challenge {
+    padding: 18px;
+  }
+}
