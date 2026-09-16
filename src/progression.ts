@@ -12,22 +12,10 @@ export type UnlockRule=
  | {kind:'stars';count:number}
  | {kind:'threeStar';count:number}
 
-export type WardrobeUnlock={
- category:'top'|'bottom'
- id:number
- name:string
- rule:UnlockRule
-}
+export type WardrobeUnlock={category:'top'|'bottom';id:number;name:string;rule:UnlockRule}
+export type ColourReward={id:string;name:string;hex:string;rule:UnlockRule}
+export type FeatureReward={id:string;name:string;rule:UnlockRule}
 
-export type ColourReward={
- id:string
- name:string
- hex:string
- rule:UnlockRule
-}
-
-// Core wardrobe progression. Free Design stays completely open and creative;
-// challenge achievements unlock extra wardrobe pieces.
 export const wardrobeUnlocks:WardrobeUnlock[]=[
  {category:'top',id:1,name:'Striped Tee',rule:{kind:'starter'}},
  {category:'top',id:2,name:'Bow Tunic',rule:{kind:'starter'}},
@@ -39,13 +27,23 @@ export const wardrobeUnlocks:WardrobeUnlock[]=[
  {category:'top',id:5,name:'Classic Top',rule:{kind:'threeStar',count:2}},
 ]
 
-// Special colours are bonus rewards. The five basic paint colours always stay open.
+// The five basic paint colours always stay open.
 export const colourRewards:ColourReward[]=[
  {id:'metallic-gold',name:'Metallic Gold',hex:'#d7ae4b',rule:{kind:'stars',count:3}},
  {id:'neon-pink',name:'Neon Pink',hex:'#ff4fa3',rule:{kind:'threeStar',count:1}},
  {id:'silver',name:'Silver',hex:'#b9bec8',rule:{kind:'stars',count:6}},
  {id:'rose-gold',name:'Rose Gold',hex:'#d99a91',rule:{kind:'stars',count:9}},
  {id:'holographic',name:'Holographic',hex:'#b9a7e8',rule:{kind:'threeStar',count:2}},
+]
+
+// The original six details are starter tools. These are extra creative rewards.
+export const featureRewards:FeatureReward[]=[
+ {id:'polka-dots',name:'Polka Dots',rule:{kind:'completed',count:1}},
+ {id:'lace',name:'Lace',rule:{kind:'stars',count:3}},
+ {id:'ruffles',name:'Ruffles',rule:{kind:'completed',count:2}},
+ {id:'embroidery',name:'Embroidery',rule:{kind:'stars',count:6}},
+ {id:'metallic-detail',name:'Metallic Detail',rule:{kind:'threeStar',count:1}},
+ {id:'colour-blocking',name:'Colour Blocking',rule:{kind:'stars',count:9}},
 ]
 
 export function getProgression(gallery:ProgressSavedLook[]):ProgressionSnapshot{
@@ -55,11 +53,7 @@ export function getProgression(gallery:ProgressSavedLook[]):ProgressionSnapshot{
   best[item.challengeId]=Math.max(best[item.challengeId]??0,item.challengeStars)
  }
  const stars=Object.values(best)
- return {
-  completedChallenges:stars.length,
-  totalBestStars:stars.reduce((sum,value)=>sum+value,0),
-  threeStarChallenges:stars.filter(value=>value===3).length,
- }
+ return {completedChallenges:stars.length,totalBestStars:stars.reduce((sum,value)=>sum+value,0),threeStarChallenges:stars.filter(value=>value===3).length}
 }
 
 export function meetsUnlock(rule:UnlockRule,progress:ProgressionSnapshot){
@@ -70,7 +64,7 @@ export function meetsUnlock(rule:UnlockRule,progress:ProgressionSnapshot){
 }
 
 export function unlockLabel(rule:UnlockRule){
- if(rule.kind==='starter')return 'Starter wardrobe'
+ if(rule.kind==='starter')return 'Starter studio item'
  if(rule.kind==='completed')return `Complete ${rule.count} ${rule.count===1?'challenge':'challenges'}`
  if(rule.kind==='stars')return `Earn ${rule.count} challenge stars`
  return `Earn 3 stars on ${rule.count} ${rule.count===1?'challenge':'challenges'}`
