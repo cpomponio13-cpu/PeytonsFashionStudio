@@ -6,7 +6,7 @@ import RecipeBook from './RecipeBook'
 import FeatureWall,{fashionFeatures} from './FeatureWall'
 import ChallengeCard,{type ChallengeProgress} from './ChallengeCard'
 import { fashionChallenges,scoreChallenge,type FashionChallenge } from './challenges'
-import { getProgression,meetsUnlock,unlockLabel,wardrobeRule,wardrobeUnlocks,type UnlockRule } from './progression'
+import { getProgression,meetsUnlock,unlockLabel,wardrobeUnlocks,type UnlockRule } from './progression'
 import { defaultKeriLook, type KeriLook } from './keriAssets'
 
 type Screen='home'|'design'|'wardrobe'|'colours'|'features'|'recipes'|'gallery'|'finished'
