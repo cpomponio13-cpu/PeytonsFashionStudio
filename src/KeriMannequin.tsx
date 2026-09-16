@@ -11,6 +11,12 @@ export default function KeriMannequin({look=defaultKeriLook,className='',portrai
       {has('stripes')&&<span className="feature-pattern feature-stripes"/>}
       {has('floral-print')&&<span className="feature-pattern feature-floral">✿　❀　✿<br/>　❀　✿<br/>✿　❀　✿</span>}
       {has('sequins')&&<span className="feature-pattern feature-sequins">✦ · ✧ · ✦<br/>· ✦ · ✧ ·<br/>✧ · ✦ · ✧</span>}
+      {has('polka-dots')&&<span className="feature-pattern feature-polka"/>}
+      {has('lace')&&<span className="feature-lace">◇ ◇ ◇ ◇ ◇</span>}
+      {has('ruffles')&&<span className="feature-ruffles">〰 〰 〰</span>}
+      {has('embroidery')&&<span className="feature-embroidery">✿ ❦ ✿</span>}
+      {has('metallic-detail')&&<span className="feature-metallic">✦</span>}
+      {has('colour-blocking')&&<span className="feature-pattern feature-colour-block"/>}
       {has('contrast-trim')&&<><span className="feature-trim trim-neck"/><span className="feature-trim trim-hem"/></>}
       {has('pockets')&&<><span className="feature-pocket pocket-left"/><span className="feature-pocket pocket-right"/></>}
       {has('belt')&&<span className="feature-belt"><i/></span>}
