@@ -12,6 +12,26 @@ export type UnlockRule=
  | {kind:'stars';count:number}
  | {kind:'threeStar';count:number}
 
+export type WardrobeUnlock={
+ category:'top'|'bottom'
+ id:number
+ name:string
+ rule:UnlockRule
+}
+
+// Core wardrobe progression. Free Design stays completely open and creative;
+// challenge achievements unlock extra wardrobe pieces.
+export const wardrobeUnlocks:WardrobeUnlock[]=[
+ {category:'top',id:1,name:'Striped Tee',rule:{kind:'starter'}},
+ {category:'top',id:2,name:'Bow Tunic',rule:{kind:'starter'}},
+ {category:'bottom',id:1,name:'Skinny Jeans',rule:{kind:'starter'}},
+ {category:'bottom',id:2,name:'Denim Shorts',rule:{kind:'starter'}},
+ {category:'top',id:3,name:'Sweetheart Top',rule:{kind:'completed',count:1}},
+ {category:'bottom',id:3,name:'Pleated Skirt',rule:{kind:'stars',count:4}},
+ {category:'top',id:4,name:'Layered Tee',rule:{kind:'completed',count:3}},
+ {category:'top',id:5,name:'Classic Top',rule:{kind:'threeStar',count:2}},
+]
+
 export function getProgression(gallery:ProgressSavedLook[]):ProgressionSnapshot{
  const best:Record<string,number>={}
  for(const item of gallery){
@@ -38,4 +58,8 @@ export function unlockLabel(rule:UnlockRule){
  if(rule.kind==='completed')return `Complete ${rule.count} ${rule.count===1?'challenge':'challenges'}`
  if(rule.kind==='stars')return `Earn ${rule.count} challenge stars`
  return `Earn 3 stars on ${rule.count} ${rule.count===1?'challenge':'challenges'}`
+}
+
+export function wardrobeRule(category:'top'|'bottom',id:number):UnlockRule{
+ return wardrobeUnlocks.find(item=>item.category===category&&item.id===id)?.rule??{kind:'starter'}
 }
