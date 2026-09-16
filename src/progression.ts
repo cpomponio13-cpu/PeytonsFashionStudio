@@ -19,6 +19,13 @@ export type WardrobeUnlock={
  rule:UnlockRule
 }
 
+export type ColourReward={
+ id:string
+ name:string
+ hex:string
+ rule:UnlockRule
+}
+
 // Core wardrobe progression. Free Design stays completely open and creative;
 // challenge achievements unlock extra wardrobe pieces.
 export const wardrobeUnlocks:WardrobeUnlock[]=[
@@ -30,6 +37,15 @@ export const wardrobeUnlocks:WardrobeUnlock[]=[
  {category:'bottom',id:3,name:'Pleated Skirt',rule:{kind:'stars',count:4}},
  {category:'top',id:4,name:'Layered Tee',rule:{kind:'completed',count:3}},
  {category:'top',id:5,name:'Classic Top',rule:{kind:'threeStar',count:2}},
+]
+
+// Special colours are bonus rewards. The five basic paint colours always stay open.
+export const colourRewards:ColourReward[]=[
+ {id:'metallic-gold',name:'Metallic Gold',hex:'#d7ae4b',rule:{kind:'stars',count:3}},
+ {id:'neon-pink',name:'Neon Pink',hex:'#ff4fa3',rule:{kind:'threeStar',count:1}},
+ {id:'silver',name:'Silver',hex:'#b9bec8',rule:{kind:'stars',count:6}},
+ {id:'rose-gold',name:'Rose Gold',hex:'#d99a91',rule:{kind:'stars',count:9}},
+ {id:'holographic',name:'Holographic',hex:'#b9a7e8',rule:{kind:'threeStar',count:2}},
 ]
 
 export function getProgression(gallery:ProgressSavedLook[]):ProgressionSnapshot{
