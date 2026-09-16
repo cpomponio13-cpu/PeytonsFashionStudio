@@ -2,14 +2,12 @@ import { defaultKeriLook, keriLayers, type KeriLook } from './keriAssets'
 import './KeriMannequin.css'
 
 type Props={ look?:KeriLook; className?:string; portrait?:boolean; features?:string[] }
-const storedFeatures=()=>{try{return JSON.parse(localStorage.getItem('peyton-selected-features')||'[]') as string[]}catch{return[]}}
 
-export default function KeriMannequin({look=defaultKeriLook,className='',portrait=false,features}:Props){
-  const activeFeatures=features??storedFeatures()
-  const has=(id:string)=>activeFeatures.includes(id)
+export default function KeriMannequin({look=defaultKeriLook,className='',portrait=false,features=[]}:Props){
+  const has=(id:string)=>features.includes(id)
   return <div className={`keri-model top-${look.top} bottom-${look.bottom} ${portrait?'keri-portrait':''} ${className}`} role="img" aria-label="Fashion model">
     {keriLayers(look).map((src,index)=><img key={src} className="keri-layer" src={src} alt="" aria-hidden={index!==0}/>) }
-    {!portrait&&activeFeatures.length>0&&<div className="fashion-feature-layer" aria-hidden="true">
+    {!portrait&&features.length>0&&<div className="fashion-feature-layer" aria-hidden="true">
       {has('stripes')&&<span className="feature-pattern feature-stripes"/>}
       {has('floral-print')&&<span className="feature-pattern feature-floral">✿　❀　✿<br/>　❀　✿<br/>✿　❀　✿</span>}
       {has('sequins')&&<span className="feature-pattern feature-sequins">✦ · ✧ · ✦<br/>· ✦ · ✧ ·<br/>✧ · ✦ · ✧</span>}
