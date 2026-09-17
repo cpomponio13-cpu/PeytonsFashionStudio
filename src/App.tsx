@@ -338,6 +338,16 @@ function App() {
                     {finished.challengeScore}% match
                   </strong>
                   <small>{finished.challengeMessage}</small>
+                  {finished.matchedCues?.length ? (
+                    <div className="match-feedback">
+                      <b>What worked in your design</b>
+                      <ul>
+                        {finished.matchedCues.map((cue) => (
+                          <li key={cue}>✓ {cue}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
                 </div>
               ) : (
                 <div className="free-design-result">
