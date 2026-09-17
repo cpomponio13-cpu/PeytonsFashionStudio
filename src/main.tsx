@@ -1,6 +1,7 @@
 import { StrictMode, useState, type MouseEvent } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import './FashionFeedback.css'
 import App from './App.tsx'
 import ColourStation from './ColourStation.tsx'
 
