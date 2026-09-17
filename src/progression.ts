@@ -15,6 +15,7 @@ export type UnlockRule=
 export type WardrobeUnlock={category:'top'|'bottom';id:number;name:string;rule:UnlockRule}
 export type ColourReward={id:string;name:string;hex:string;rule:UnlockRule}
 export type FeatureReward={id:string;name:string;rule:UnlockRule}
+export type StudioReward={name:string;icon:string;rule:UnlockRule}
 
 export const wardrobeUnlocks:WardrobeUnlock[]=[
  {category:'top',id:1,name:'Striped Tee',rule:{kind:'starter'}},
@@ -68,6 +69,22 @@ export function unlockLabel(rule:UnlockRule){
  if(rule.kind==='completed')return `Complete ${rule.count} ${rule.count===1?'challenge':'challenges'}`
  if(rule.kind==='stars')return `Earn ${rule.count} challenge stars`
  return `Earn 3 stars on ${rule.count} ${rule.count===1?'challenge':'challenges'}`
+}
+
+function rewardDistance(rule:UnlockRule,progress:ProgressionSnapshot){
+ if(rule.kind==='starter')return 0
+ const current=rule.kind==='completed'
+  ? progress.completedChallenges
+  : rule.kind==='stars'
+   ? progress.totalBestStars
+   : progress.threeStarChallenges
+ return Math.max(0,(rule.count-current)/rule.count)
+}
+
+export function nearestLockedReward(rewards:StudioReward[],progress:ProgressionSnapshot){
+ return rewards
+  .filter(reward=>reward.rule.kind!=='starter'&&!meetsUnlock(reward.rule,progress))
+  .sort((a,b)=>rewardDistance(a.rule,progress)-rewardDistance(b.rule,progress))[0]
 }
 
 export function wardrobeRule(category:'top'|'bottom',id:number):UnlockRule{
