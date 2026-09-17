@@ -15,6 +15,7 @@ import {
   featureRewards,
   getProgression,
   meetsUnlock,
+  nearestLockedReward,
   unlockLabel,
   wardrobeUnlocks,
   type UnlockRule,
@@ -114,11 +115,11 @@ function App() {
     [challenge, setChallenge] = useState<FashionChallenge>(fashionChallenges[0]);
   const progression = getProgression(gallery);
   const unlocked = (g: Garment) => meetsUnlock(g.rule, progression);
-  const nextReward = [
+  const nextReward = nearestLockedReward([
     ...wardrobeUnlocks.map((x) => ({ name: x.name, icon: "👗", rule: x.rule })),
     ...colourRewards.map((x) => ({ name: x.name, icon: "🎨", rule: x.rule })),
     ...featureRewards.map((x) => ({ name: x.name, icon: "✨", rule: x.rule })),
-  ].find((r) => r.rule.kind !== "starter" && !meetsUnlock(r.rule, progression));
+  ], progression);
   const challengeProgress: ChallengeProgress = gallery.reduce((acc, item) => {
     if (
       !item.challengeId ||
