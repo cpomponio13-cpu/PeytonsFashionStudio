@@ -151,7 +151,7 @@ function App() {
   const syncFeatures = () => setFeatures(readFeatures());
   const featureUnlocked = (id: string) => {
     const f = fashionFeatures.find((x) => x.id === id);
-    return !f || meetsUnlock(f.rule, progression);
+    return !!f && meetsUnlock(f.rule, progression);
   };
   const toggleFeature = (id: string) => {
     if (!featureUnlocked(id)) return;
@@ -471,106 +471,163 @@ function App() {
           <p>Every finished design is saved here.</p>
           {gallery.length === 0 ? (
             <div className="empty-gallery">
-              🖼️<strong>No designs yet</strong>
-              <span>Finish your first look to start the collection.</span>
-              <button
-                className="challenge-button"
-                onClick={() => startChallenge(fashionChallenges[0])}
-              >
+              <span>♡</span>
+              <strong>No designs yet</strong>
+              <span>Create your first look in the Design Studio.</span>
+              <button className="finish-design" onClick={() => setScreen("design")}>
                 Start Designing →
               </button>
             </div>
           ) : (
             <div className="gallery-grid">
-              {gallery.map((item) => {
-                const itemChallenge = fashionChallenges.find(
-                  (c) => c.id === item.challengeId,
-                );
-                return (
-                  <article className="gallery-card" key={item.id}>
-                    <div className="gallery-model">
-                      <KeriMannequin
-                        look={item.look}
-                        features={item.features ?? []}
-                      />
-                    </div>
-                    <strong>{item.name}</strong>
-                    <small>
-                      {itemChallenge && itemChallenge.id !== "free"
-                        ? `${"★".repeat(item.challengeStars ?? 1)} ${itemChallenge.title}`
-                        : item.features?.length
-                          ? `✨ ${item.features.length} details`
-                          : "Free Design"}
-                    </small>
-                  </article>
-                );
-              })}
+              {gallery.map((item) => (
+                <article className="gallery-card" key={item.id}>
+                  <div className="gallery-model">
+                    <KeriMannequin
+                      look={item.look}
+                      features={item.features ?? []}
+                    />
+                  </div>
+                  <strong>{item.name}</strong>
+                  <small>
+                    {fashionChallenges.find((c) => c.id === item.challengeId)?.icon ?? "💖"}{" "}
+                    {fashionChallenges.find((c) => c.id === item.challengeId)?.title ?? "Free Design"}
+                  </small>
+                </article>
+              ))}
             </div>
           )}
         </section>
       </main>
     );
+  if (screen === "home") {
+    const unlockedFeatureCount = fashionFeatures.filter((f) =>
+      meetsUnlock(f.rule, progression),
+    ).length;
+    const unlockedColourCount = colourRewards.filter((r) =>
+      meetsUnlock(r.rule, progression),
+    ).length;
+    const nextChallenge =
+      fashionChallenges
+        .filter((c) => c.id !== "free")
+        .find((c) => (challengeProgress[c.id]?.bestStars ?? 0) < 3) ??
+      fashionChallenges[1];
+    return (
+      <main className="app-shell">
+        <Header />
+        <section className="studio">
+          <div className="welcome">
+            <p className="eyebrow">WELCOME TO YOUR STUDIO</p>
+            <h1>Create something amazing.</h1>
+            <p className="welcome-text">
+              Mix colours, add details, build outfits and save every design you love.
+            </p>
+          </div>
+          <div className="studio-floor">
+            <button className="studio-area wardrobe-area" onClick={() => setScreen("wardrobe")}>
+              <span className="area-icon">👗</span>
+              <span className="area-title">Wardrobe</span>
+              <span className="area-description">
+                {tops.filter(unlocked).length + bottoms.filter(unlocked).length}/
+                {tops.length + bottoms.length} pieces unlocked
+              </span>
+            </button>
+            <button className="studio-area colours-area" onClick={() => setScreen("colours")}>
+              <span className="area-icon">🎨</span>
+              <span className="area-title">Colour Station</span>
+              <span className="area-description">
+                {unlockedColourCount}/{colourRewards.length} special colours unlocked
+              </span>
+            </button>
+            <button className="studio-area features-area" onClick={() => setScreen("features")}>
+              <span className="area-icon">✨</span>
+              <span className="area-title">Feature Wall</span>
+              <span className="area-description">
+                {unlockedFeatureCount}/{fashionFeatures.length} details unlocked
+              </span>
+            </button>
+            <button className="studio-area recipes-area" onClick={() => setScreen("recipes")}>
+              <span className="area-icon">📖</span>
+              <span className="area-title">Recipe Book</span>
+              <span className="area-description">{readRecipes().length} colour mixes discovered</span>
+            </button>
+            <button className="studio-area gallery-area" onClick={() => setScreen("gallery")}>
+              <span className="area-icon">🖼️</span>
+              <span className="area-title">Fashion Gallery</span>
+              <span className="area-description">{gallery.length} looks saved</span>
+            </button>
+            <button className="design-studio" onClick={() => setScreen("design")}>
+              <div className="mirror keri-home-mirror">
+                <div className="mirror-shine" />
+                <KeriMannequin look={look} features={features} />
+              </div>
+              <div className="design-studio-label">
+                <span className="design-icon">✦</span>
+                <div>
+                  <strong>Design Studio</strong>
+                  <small>Create a new fashion look</small>
+                </div>
+                <span className="arrow">→</span>
+              </div>
+            </button>
+          </div>
+          <ChallengeCard
+            challenge={nextChallenge}
+            progress={challengeProgress[nextChallenge.id]}
+            onStart={() => startChallenge(nextChallenge)}
+          />
+        </section>
+        <footer className="studio-footer">
+          <span>♡ Designed for Peyton</span>
+          <span>✦ Create • Experiment • Express</span>
+        </footer>
+      </main>
+    );
+  }
   if (screen === "design")
     return (
       <main className="app-shell">
         <Header back />
         <section className="designer-page">
-          <ChallengeCard
-            active={challenge}
-            onChange={setChallenge}
-            progress={challengeProgress}
-          />
-          <div className="designer-workspace keri-workspace">
+          <div className="designer-challenge">
+            <span>{challenge.icon}</span>
+            <div>
+              <small>{challenge.id === "free" ? "FREE DESIGN" : "CURRENT CHALLENGE"}</small>
+              <strong>{challenge.title}</strong>
+            </div>
+            <button onClick={() => setChallenge(fashionChallenges[0])}>Change</button>
+          </div>
+          <div className="designer-workspace">
             <div className="designer-summary">
-              <small>CURRENT LOOK</small>
-              <h2>Your Outfit</h2>
-              <p>
-                {topName} • {bottomName}
-              </p>
-              <p>
-                {features.length
-                  ? `✨ ${features.length}/3 details added`
-                  : "Mix, match and make it yours ✨"}
-              </p>
+              <small>YOUR LOOK</small>
+              <h2>{topName}</h2>
+              <p>with {bottomName}</p>
             </div>
             <div className="designer-mirror keri-mirror">
-              <div className="mirror-shine" />
               <KeriMannequin look={look} features={features} />
             </div>
             <div className="designer-tip">
               <span>♡</span>
-              <strong>Design • Create • Express</strong>
-              <p>There are no wrong designs.</p>
+              <strong>There are no wrong designs.</strong>
+              <p>Experiment until the look feels like yours.</p>
             </div>
           </div>
           <div className="design-drawer">
-            <div className="drawer-tabs four-tabs">
-              <button
-                className={tab === "clothing" ? "active" : ""}
-                onClick={() => setTab("clothing")}
-              >
+            <div className="drawer-tabs">
+              <button className={tab === "clothing" ? "active" : ""} onClick={() => setTab("clothing")}>
                 👗 <span>Clothing</span>
               </button>
-              <button
-                className={tab === "style" ? "active" : ""}
-                onClick={() => setTab("style")}
-              >
+              <button className={tab === "style" ? "active" : ""} onClick={() => setTab("style")}>
                 🎨 <span>Style</span>
               </button>
-              <button
-                className={tab === "details" ? "active" : ""}
-                onClick={() => setTab("details")}
-              >
-                ✨ <span>Details {features.length}/3</span>
+              <button className={tab === "details" ? "active" : ""} onClick={() => setTab("details")}>
+                ✨ <span>Details</span>
               </button>
-              <button
-                className={tab === "model" ? "active" : ""}
-                onClick={() => setTab("model")}
-              >
-                💇 <span>Model</span>
+              <button className={tab === "model" ? "active" : ""} onClick={() => setTab("model")}>
+                ♡ <span>Model</span>
               </button>
             </div>
-            <div className="drawer-options keri-options">
+            <div className="drawer-options">
               {tab === "clothing" && (
                 <>
                   <div className="option-group visual-group">
@@ -585,11 +642,7 @@ function App() {
                     <b>BOTTOMS</b>
                     <div className="visual-choice-row">
                       {bottoms.map((item) => (
-                        <GarmentChoice
-                          key={item.id}
-                          item={item}
-                          type="bottom"
-                        />
+                        <GarmentChoice key={item.id} item={item} type="bottom" />
                       ))}
                     </div>
                   </div>
@@ -607,9 +660,7 @@ function App() {
                           onClick={() => patch({ topStyle: item.id })}
                         >
                           <span className="choice-preview">
-                            <KeriMannequin
-                              look={preview({ topStyle: item.id })}
-                            />
+                            <KeriMannequin look={preview({ topStyle: item.id })} />
                           </span>
                           <strong>{item.name}</strong>
                           {look.topStyle === item.id && <i>✓</i>}
@@ -627,9 +678,7 @@ function App() {
                           onClick={() => patch({ bottomStyle: item.id })}
                         >
                           <span className="choice-preview">
-                            <KeriMannequin
-                              look={preview({ bottomStyle: item.id })}
-                            />
+                            <KeriMannequin look={preview({ bottomStyle: item.id })} />
                           </span>
                           <strong>{item.name}</strong>
                           {look.bottomStyle === item.id && <i>✓</i>}
@@ -658,18 +707,13 @@ function App() {
                         >
                           <span>{isUnlocked ? f.icon : "🔒"}</span>
                           <strong>{f.name}</strong>
-                          <small>
-                            {isUnlocked ? f.kind : unlockLabel(f.rule)}
-                          </small>
+                          <small>{isUnlocked ? f.kind : unlockLabel(f.rule)}</small>
                           {active && <i>✓</i>}
                         </button>
                       );
                     })}
                   </div>
-                  <button
-                    className="feature-wall-link"
-                    onClick={() => setScreen("features")}
-                  >
+                  <button className="feature-wall-link" onClick={() => setScreen("features")}>
                     Open Feature Wall →
                   </button>
                 </div>
@@ -686,10 +730,7 @@ function App() {
                           onClick={() => patch({ hairStyle: n })}
                         >
                           <span className="choice-preview portrait-preview">
-                            <KeriMannequin
-                              portrait
-                              look={preview({ hairStyle: n })}
-                            />
+                            <KeriMannequin portrait look={preview({ hairStyle: n })} />
                           </span>
                           <strong>Style {n}</strong>
                           {look.hairStyle === n && <i>✓</i>}
@@ -703,9 +744,7 @@ function App() {
                       {hairColours.map((item) => (
                         <button
                           key={item.id}
-                          className={
-                            look.hairColour === item.id ? "selected" : ""
-                          }
+                          className={look.hairColour === item.id ? "selected" : ""}
                           onClick={() => patch({ hairColour: item.id })}
                         >
                           {item.name}
@@ -739,9 +778,7 @@ function App() {
               ✓ Finish Design
             </button>
           </div>
-          <p className="asset-credit">
-            Keri character artwork by Konett • CC BY
-          </p>
+          <p className="asset-credit">Keri character artwork by Konett • CC BY</p>
         </section>
       </main>
     );
@@ -759,121 +796,7 @@ function App() {
         </section>
       </main>
     );
-  const recipeCount = readRecipes().length;
-  const scoredChallenges = fashionChallenges.filter((c) => c.id !== "free");
-  const nextChallenge =
-    scoredChallenges.find((c) => !challengeProgress[c.id]?.attempts) ??
-    [...scoredChallenges].sort(
-      (a, b) =>
-        (challengeProgress[a.id]?.bestStars ?? 0) -
-        (challengeProgress[b.id]?.bestStars ?? 0),
-    )[0];
-  return (
-    <main className="app-shell">
-      <Header />
-      <section className="studio">
-        <div className="welcome">
-          <p className="eyebrow">WELCOME, DESIGNER</p>
-          <h1>Your Fashion Studio</h1>
-          <p className="welcome-text">
-            Create outfits, discover colours and build your own fashion
-            collection.
-          </p>
-        </div>
-        <div className="studio-floor">
-          <button
-            className="studio-area wardrobe-area"
-            onClick={() => setScreen("wardrobe")}
-          >
-            <span className="area-icon">👗</span>
-            <span className="area-title">Wardrobe</span>
-            <span className="area-description">
-              {tops.filter(unlocked).length + bottoms.filter(unlocked).length}/
-              {tops.length + bottoms.length} pieces unlocked
-            </span>
-          </button>
-          <button
-            className="studio-area colours-area"
-            onClick={() => setScreen("colours")}
-          >
-            <span className="area-icon">🎨</span>
-            <span className="area-title">Colour Station</span>
-            <span className="area-description">Mix & discover colours</span>
-          </button>
-          <button
-            className="studio-area features-area"
-            onClick={() => setScreen("features")}
-          >
-            <span className="area-icon">✨</span>
-            <span className="area-title">Feature Wall</span>
-            <span className="area-description">Choose up to 3 details</span>
-          </button>
-          <button
-            className="studio-area recipes-area"
-            onClick={() => setScreen("recipes")}
-          >
-            <span className="area-icon">📖</span>
-            <span className="area-title">Recipe Book</span>
-            <span className="area-description">
-              {recipeCount} colours discovered
-            </span>
-          </button>
-          <button
-            className="studio-area gallery-area"
-            onClick={() => setScreen("gallery")}
-          >
-            <span className="area-icon">🖼️</span>
-            <span className="area-title">Fashion Gallery</span>
-            <span className="area-description">
-              {gallery.length} saved {gallery.length === 1 ? "look" : "looks"}
-            </span>
-          </button>
-          <button
-            className="design-studio"
-            onClick={() => startChallenge(fashionChallenges[0])}
-          >
-            <div className="mirror keri-home-mirror">
-              <div className="mirror-shine" />
-              <KeriMannequin look={look} />
-            </div>
-            <div className="design-studio-label">
-              <span className="design-icon">🪞</span>
-              <div>
-                <strong>Design Studio</strong>
-                <small>Tap the model to start designing</small>
-              </div>
-              <span className="arrow">→</span>
-            </div>
-          </button>
-        </div>
-        <div className="first-challenge">
-          <div className="challenge-icon">{nextChallenge.icon}</div>
-          <div className="challenge-copy">
-            <span>
-              CHALLENGE PROGRESS · {progression.completedChallenges}/
-              {scoredChallenges.length} TRIED · ⭐ {progression.totalBestStars}/
-              {scoredChallenges.length * 3}
-            </span>
-            <strong>{nextChallenge.title}</strong>
-            <p>{nextChallenge.brief}</p>
-          </div>
-          <button
-            className="challenge-button"
-            onClick={() => startChallenge(nextChallenge)}
-          >
-            {challengeProgress[nextChallenge.id]?.attempts
-              ? "Try Again →"
-              : "Start Challenge →"}
-          </button>
-        </div>
-      </section>
-      <footer className="studio-footer">
-        <span>👗 Create</span>
-        <span>🎨 Experiment</span>
-        <span>✨ Discover</span>
-        <span>💖 Have fun</span>
-      </footer>
-    </main>
-  );
+  return null;
 }
+
 export default App;
