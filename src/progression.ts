@@ -26,6 +26,10 @@ export const wardrobeUnlocks:WardrobeUnlock[]=[
  {category:'bottom',id:3,name:'Pleated Skirt',rule:{kind:'stars',count:4}},
  {category:'top',id:4,name:'Layered Tee',rule:{kind:'completed',count:3}},
  {category:'top',id:5,name:'Classic Top',rule:{kind:'threeStar',count:2}},
+ {category:'top',id:6,name:'Long Sleeve Top',rule:{kind:'starter'}},
+ {category:'top',id:7,name:'Hoodie',rule:{kind:'starter'}},
+ {category:'top',id:8,name:'Cropped Top',rule:{kind:'completed',count:1}},
+ {category:'top',id:9,name:'Blouse',rule:{kind:'stars',count:3}},
 ]
 
 // The five basic paint colours always stay open.
