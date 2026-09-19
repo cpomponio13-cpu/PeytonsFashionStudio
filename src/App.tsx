@@ -73,7 +73,7 @@ const hairColours = [
   { id: 5, name: "Brown" },
   { id: 6, name: "Dark" },
 ];
-const hairStyles = [1, 2, 3, 4, 5];
+const hairStyles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const readGallery = (): SavedLook[] => {
   try {
     return JSON.parse(localStorage.getItem("peyton-fashion-gallery") || "[]");
@@ -326,7 +326,7 @@ function App() {
           </div>
         </div>
         <div className="designer-actions"><button className="reset-design" onClick={reset}>↻ Start Again</button><button className="finish-design" onClick={finishDesign}>✓ Finish Design</button></div>
-        <p className="asset-credit">Keri character artwork by Konett • CC BY</p>
+        <p className="asset-credit">Glam Girl character assets by Igra Studios</p>
       </section>
     </main>
   );
