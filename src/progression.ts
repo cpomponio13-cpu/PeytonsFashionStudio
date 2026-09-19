@@ -12,7 +12,8 @@ export type UnlockRule=
  | {kind:'stars';count:number}
  | {kind:'threeStar';count:number}
 
-export type WardrobeUnlock={category:'top'|'bottom';id:number;name:string;rule:UnlockRule}
+export type WardrobeCategory='top'|'bottom'|'dress'|'jacket'|'shoes'
+export type WardrobeUnlock={category:WardrobeCategory;id:number;name:string;rule:UnlockRule}
 export type ColourReward={id:string;name:string;hex:string;rule:UnlockRule}
 export type FeatureReward={id:string;name:string;rule:UnlockRule}
 export type StudioReward={name:string;icon:string;rule:UnlockRule}
@@ -31,6 +32,25 @@ export const wardrobeUnlocks:WardrobeUnlock[]=[
  {category:'bottom',id:5,name:'Skirt 2',rule:{kind:'stars',count:4}},
  {category:'bottom',id:6,name:'Leggings 1',rule:{kind:'completed',count:2}},
  {category:'bottom',id:7,name:'Trousers 3',rule:{kind:'threeStar',count:1}},
+ {category:'dress',id:1,name:'Dress 1',rule:{kind:'starter'}},
+ {category:'dress',id:2,name:'Dress 2',rule:{kind:'completed',count:1}},
+ {category:'dress',id:3,name:'Dress 3',rule:{kind:'stars',count:3}},
+ {category:'dress',id:4,name:'Dress 4',rule:{kind:'completed',count:2}},
+ {category:'dress',id:5,name:'Dress 5',rule:{kind:'stars',count:6}},
+ {category:'dress',id:6,name:'Dress 6',rule:{kind:'threeStar',count:1}},
+ {category:'dress',id:7,name:'Dress 7',rule:{kind:'stars',count:9}},
+ {category:'jacket',id:1,name:'Jacket 1',rule:{kind:'starter'}},
+ {category:'jacket',id:2,name:'Jacket 2',rule:{kind:'completed',count:1}},
+ {category:'jacket',id:3,name:'Jacket 3',rule:{kind:'stars',count:4}},
+ {category:'jacket',id:4,name:'Jacket 4',rule:{kind:'completed',count:2}},
+ {category:'jacket',id:5,name:'Jacket 5',rule:{kind:'stars',count:7}},
+ {category:'jacket',id:6,name:'Jacket 6',rule:{kind:'threeStar',count:1}},
+ {category:'shoes',id:1,name:'Shoes 1',rule:{kind:'starter'}},
+ {category:'shoes',id:2,name:'Shoes 2',rule:{kind:'starter'}},
+ {category:'shoes',id:3,name:'Shoes 3',rule:{kind:'completed',count:1}},
+ {category:'shoes',id:4,name:'Shoes 4',rule:{kind:'stars',count:4}},
+ {category:'shoes',id:5,name:'Shoes 5',rule:{kind:'completed',count:2}},
+ {category:'shoes',id:6,name:'Shoes 6',rule:{kind:'threeStar',count:1}},
 ]
 
 // The five basic paint colours always stay open.
@@ -92,6 +112,6 @@ export function nearestLockedReward(rewards:StudioReward[],progress:ProgressionS
   .sort((a,b)=>rewardDistance(a.rule,progress)-rewardDistance(b.rule,progress))[0]
 }
 
-export function wardrobeRule(category:'top'|'bottom',id:number):UnlockRule{
+export function wardrobeRule(category:WardrobeCategory,id:number):UnlockRule{
  return wardrobeUnlocks.find(item=>item.category===category&&item.id===id)?.rule??{kind:'starter'}
 }
