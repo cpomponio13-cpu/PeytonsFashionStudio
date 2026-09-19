@@ -8,6 +8,9 @@ export type KeriLook = {
  topStyle:number
  bottom:number
  bottomStyle:number
+ dress:number
+ jacket:number
+ shoes:number
 }
 
 export const defaultKeriLook:KeriLook={
@@ -20,4 +23,7 @@ export const defaultKeriLook:KeriLook={
  topStyle:1,
  bottom:1,
  bottomStyle:1,
+ dress:0,
+ jacket:0,
+ shoes:1,
 }
