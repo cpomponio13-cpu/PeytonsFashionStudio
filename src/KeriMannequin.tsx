@@ -33,15 +33,7 @@ const bottomAsset=(id:number)=>{
  return '/glamgirl/trousers/trousers-1_1.png'
 }
 
-const topAsset=(id:number)=>{
- if(id<=6)return `/glamgirl/tops/top-${id}_1.png`
- if(id===7)return '/glamgirl/jackets/jacket-1_1.png'
- if(id===8)return '/glamgirl/tops/top-6_1.png'
- if(id===9)return '/glamgirl/jackets/jacket-2_1.png'
- if(id===10)return '/glamgirl/jackets/jacket-3_1.png'
- if(id===11)return '/glamgirl/jackets/jacket-4_1.png'
- return '/glamgirl/tops/top-1_1.png'
-}
+const topAsset=(id:number)=>`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
 
 const glamLayers=(look:GlamLook)=>{
  const hair=hairLayers(look.hairStyle)
