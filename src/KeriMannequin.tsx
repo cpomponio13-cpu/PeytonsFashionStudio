@@ -10,11 +10,14 @@ export type GlamLook = {
   topStyle:number
   bottom:number
   bottomStyle:number
+  dress:number
+  jacket:number
+  shoes:number
 }
 
 export const defaultGlamLook:GlamLook={
   skin:1,hairStyle:1,hairColour:1,eyes:1,eyeColour:1,
-  top:1,topStyle:1,bottom:1,bottomStyle:1
+  top:1,topStyle:1,bottom:1,bottomStyle:1,dress:0,jacket:0,shoes:1
 }
 
 const layer=(src:string)=>src
@@ -36,6 +39,9 @@ const bottomAsset=(id:number)=>{
 const topAsset=(id:number)=>`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
 
 const glamLayers=(look:GlamLook)=>{
+ const dress=look.dress>0?`/glamgirl/dresses/dress-${Math.max(1,Math.min(7,look.dress))}_1.png`:undefined
+ const jacket=look.jacket>0?`/glamgirl/jackets/jacket-${Math.max(1,Math.min(6,look.jacket))}_1.png`:undefined
+ const shoes=`/glamgirl/shoes/shoes-${Math.max(1,Math.min(6,look.shoes||1))}_1.png`
  const hair=hairLayers(look.hairStyle)
  return [
   hair.back,
@@ -46,9 +52,11 @@ const glamLayers=(look:GlamLook)=>{
   '/glamgirl/face/eyebrows-1_1.png',
   '/glamgirl/face/cheeks-1_1.png',
   '/glamgirl/face/lips-1_1.png',
-  bottomAsset(look.bottom),
-  topAsset(look.top),
-  '/glamgirl/shoes/shoes-1_1.png',
+  dress?undefined:bottomAsset(look.bottom),
+  dress?undefined:topAsset(look.top),
+  dress,
+  jacket,
+  shoes,
   hair.front,
  ].filter(Boolean) as string[]
 }
