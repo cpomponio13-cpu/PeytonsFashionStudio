@@ -36,6 +36,22 @@ const LOCAL_TOPS:Record<number,string[]> = {
     '/clothing/tops/top9_5_blouse_sky.png',
     '/clothing/tops/top9_6_blouse_black.png',
   ],
+  10: [
+    '/clothing/outerwear/jackets/jackets_leather/asymmetrical_black_leather_biker_jacket.png',
+    '/clothing/outerwear/jackets/jackets_leather/maroon_cropped_leather_biker_jacket.png',
+    '/clothing/outerwear/jackets/jackets_leather/cream_beige_asymmetrical_biker_jacket.png',
+    '/clothing/outerwear/jackets/jackets_leather/pink_asymmetrical_moto_jacket_asset.png',
+    '/clothing/outerwear/jackets/jackets_leather/navy_asymmetric_leather_biker_jacket.png',
+    '/clothing/outerwear/jackets/jackets_leather/asymmetrical_black_leather_biker_jacket.png',
+  ],
+  11: [
+    '/clothing/outerwear/cardigan/pink_cardigan.png',
+    '/clothing/outerwear/cardigan/pink_cardigan.png',
+    '/clothing/outerwear/cardigan/pink_cardigan.png',
+    '/clothing/outerwear/cardigan/pink_cardigan.png',
+    '/clothing/outerwear/cardigan/pink_cardigan.png',
+    '/clothing/outerwear/cardigan/pink_cardigan.png',
+  ],
 }
 
 export const topAsset=(top:number,style:number)=>{
@@ -44,7 +60,18 @@ export const topAsset=(top:number,style:number)=>{
   return `${ROOT}/Tops/top${top}_${style}.png`
 }
 
-export const bottomAsset=(bottom:number,style:number)=>`${ROOT}/Bottoms/bottom${bottom}_${style}.png`
+const LOCAL_BOTTOMS:Record<number,string[]> = {
+  4: Array(6).fill('/clothing/bottoms/shorts/denim_shorts.png'),
+  5: Array(6).fill('/clothing/bottoms/skirt/pleated_skirt.png'),
+  6: Array(6).fill('/clothing/bottoms/leggings/black_leggings.png'),
+  7: Array(6).fill('/clothing/bottoms/trousers/palazzo_trousers.png'),
+}
+
+export const bottomAsset=(bottom:number,style:number)=>{
+  const local=LOCAL_BOTTOMS[bottom]
+  if(local)return local[Math.max(0,Math.min(local.length-1,style-1))]
+  return `${ROOT}/Bottoms/bottom${bottom}_${style}.png`
+}
 
 export const keriLayers=(k:KeriLook)=>[
  `${ROOT}/Base/base${k.skin}.png`,
