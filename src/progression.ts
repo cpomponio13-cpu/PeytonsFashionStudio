@@ -18,24 +18,19 @@ export type FeatureReward={id:string;name:string;rule:UnlockRule}
 export type StudioReward={name:string;icon:string;rule:UnlockRule}
 
 export const wardrobeUnlocks:WardrobeUnlock[]=[
- {category:'top',id:1,name:'Striped Tee',rule:{kind:'starter'}},
- {category:'top',id:2,name:'Bow Tunic',rule:{kind:'starter'}},
- {category:'bottom',id:1,name:'Skinny Jeans',rule:{kind:'starter'}},
- {category:'bottom',id:2,name:'Denim Shorts',rule:{kind:'starter'}},
- {category:'top',id:3,name:'Sweetheart Top',rule:{kind:'completed',count:1}},
- {category:'bottom',id:3,name:'Pleated Skirt',rule:{kind:'stars',count:4}},
- {category:'top',id:4,name:'Layered Tee',rule:{kind:'completed',count:3}},
- {category:'top',id:5,name:'Classic Top',rule:{kind:'threeStar',count:2}},
- {category:'top',id:6,name:'Long Sleeve Top',rule:{kind:'starter'}},
- {category:'top',id:7,name:'Hoodie',rule:{kind:'starter'}},
- {category:'top',id:8,name:'Cropped Top',rule:{kind:'completed',count:1}},
- {category:'top',id:9,name:'Blouse',rule:{kind:'stars',count:3}},
- {category:'top',id:10,name:'Leather Biker Jacket',rule:{kind:'starter'}},
- {category:'top',id:11,name:'Cropped Cardigan',rule:{kind:'starter'}},
- {category:'bottom',id:4,name:'Denim Shorts — New',rule:{kind:'starter'}},
- {category:'bottom',id:5,name:'Pleated Skirt — New',rule:{kind:'starter'}},
- {category:'bottom',id:6,name:'Black Leggings',rule:{kind:'starter'}},
- {category:'bottom',id:7,name:'Palazzo Trousers',rule:{kind:'starter'}},
+ {category:'top',id:1,name:'Top 1',rule:{kind:'starter'}},
+ {category:'top',id:2,name:'Top 2',rule:{kind:'starter'}},
+ {category:'top',id:3,name:'Top 3',rule:{kind:'completed',count:1}},
+ {category:'top',id:4,name:'Top 4',rule:{kind:'stars',count:3}},
+ {category:'top',id:5,name:'Top 5',rule:{kind:'completed',count:2}},
+ {category:'top',id:6,name:'Top 6',rule:{kind:'threeStar',count:1}},
+ {category:'bottom',id:1,name:'Trousers 1',rule:{kind:'starter'}},
+ {category:'bottom',id:2,name:'Trousers 2',rule:{kind:'starter'}},
+ {category:'bottom',id:3,name:'Skirt 1',rule:{kind:'completed',count:1}},
+ {category:'bottom',id:4,name:'Shorts 1',rule:{kind:'starter'}},
+ {category:'bottom',id:5,name:'Skirt 2',rule:{kind:'stars',count:4}},
+ {category:'bottom',id:6,name:'Leggings 1',rule:{kind:'completed',count:2}},
+ {category:'bottom',id:7,name:'Trousers 3',rule:{kind:'threeStar',count:1}},
 ]
 
 // The five basic paint colours always stay open.
