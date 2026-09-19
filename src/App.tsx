@@ -56,23 +56,6 @@ const tops: Garment[] = wardrobeUnlocks
 const bottoms: Garment[] = wardrobeUnlocks
   .filter((x) => x.category === "bottom")
   .map((x) => ({ ...x, category: "bottom" }));
-const styles = [
-  { id: 1, name: "Original" },
-  { id: 2, name: "Ocean" },
-  { id: 3, name: "Berry" },
-  { id: 4, name: "Midnight" },
-  { id: 5, name: "Pop" },
-  { id: 6, name: "Fresh" },
-];
-const skinTones = ["#f8dfcc", "#efd0b4", "#d9a77f", "#b97c55", "#875237"];
-const hairColours = [
-  { id: 1, name: "Blonde" },
-  { id: 2, name: "Honey" },
-  { id: 3, name: "Copper" },
-  { id: 4, name: "Auburn" },
-  { id: 5, name: "Brown" },
-  { id: 6, name: "Dark" },
-];
 const hairStyles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const readGallery = (): SavedLook[] => {
   try {
@@ -320,9 +303,9 @@ function App() {
         <div className="design-drawer"><div className="drawer-tabs"><button className={tab === "clothing" ? "active" : ""} onClick={() => setTab("clothing")}>👗 <span>Clothing</span></button><button className={tab === "style" ? "active" : ""} onClick={() => setTab("style")}>🎨 <span>Style</span></button><button className={tab === "details" ? "active" : ""} onClick={() => setTab("details")}>✨ <span>Details</span></button><button className={tab === "model" ? "active" : ""} onClick={() => setTab("model")}>♡ <span>Model</span></button></div>
           <div className="drawer-options">
             {tab === "clothing" && <><div className="option-group visual-group"><b>TOPS</b><div className="visual-choice-row">{tops.map((item) => <GarmentChoice key={item.id} item={item} type="top" />)}</div></div><div className="option-group visual-group"><b>BOTTOMS</b><div className="visual-choice-row">{bottoms.map((item) => <GarmentChoice key={item.id} item={item} type="bottom" />)}</div></div></>}
-            {tab === "style" && <><div className="option-group visual-group"><b>TOP COLOUR / STYLE</b><div className="visual-choice-row">{styles.map((item) => <button key={item.id} className={`visual-choice style-choice ${look.topStyle === item.id ? "selected" : ""}`} onClick={() => patch({ topStyle: item.id })}><span className="choice-preview"><KeriMannequin look={preview({ topStyle: item.id })} /></span><strong>{item.name}</strong>{look.topStyle === item.id && <i>✓</i>}</button>)}</div></div><div className="option-group visual-group"><b>BOTTOM COLOUR / STYLE</b><div className="visual-choice-row">{styles.map((item) => <button key={item.id} className={`visual-choice style-choice ${look.bottomStyle === item.id ? "selected" : ""}`} onClick={() => patch({ bottomStyle: item.id })}><span className="choice-preview"><KeriMannequin look={preview({ bottomStyle: item.id })} /></span><strong>{item.name}</strong>{look.bottomStyle === item.id && <i>✓</i>}</button>)}</div></div></>}
+            {tab === "style" && <div className="details-drawer"><div className="details-heading"><b>COLOURS</b><span>Full Glam Girl colour library coming next</span></div><p className="welcome-text">The starter pack currently uses the original supplied colour for each garment. We’ll wire the purchased colour variants here next.</p></div>}
             {tab === "details" && <div className="details-drawer"><div className="details-heading"><b>FEATURES</b><span>{features.length}/3 selected</span></div><div className="detail-choice-row">{fashionFeatures.map((f) => { const active = features.includes(f.id), isUnlocked = meetsUnlock(f.rule, progression); return <button key={f.id} className={`detail-choice ${active ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`} onClick={() => toggleFeature(f.id)} disabled={!isUnlocked}><span>{isUnlocked ? f.icon : "🔒"}</span><strong>{f.name}</strong><small>{isUnlocked ? f.kind : unlockLabel(f.rule)}</small>{active && <i>✓</i>}</button>; })}</div><button className="feature-wall-link" onClick={() => setScreen("features")}>Open Feature Wall →</button></div>}
-            {tab === "model" && <><div className="option-group visual-group"><b>HAIRSTYLE</b><div className="visual-choice-row">{hairStyles.map((n) => <button key={n} className={`visual-choice model-choice ${look.hairStyle === n ? "selected" : ""}`} onClick={() => patch({ hairStyle: n })}><span className="choice-preview portrait-preview"><KeriMannequin portrait look={preview({ hairStyle: n })} /></span><strong>Style {n}</strong>{look.hairStyle === n && <i>✓</i>}</button>)}</div></div><div className="option-group model-settings"><b>HAIR COLOUR</b><div className="model-pills">{hairColours.map((item) => <button key={item.id} className={look.hairColour === item.id ? "selected" : ""} onClick={() => patch({ hairColour: item.id })}>{item.name}</button>)}</div><b>SKIN TONE</b><div className="skin-row">{skinTones.map((colour, i) => <button key={i} aria-label={`Skin tone ${i + 1}`} className={look.skin === i + 1 ? "selected" : ""} onClick={() => patch({ skin: i + 1 })} style={{ background: colour }}>{look.skin === i + 1 ? "✓" : ""}</button>)}</div></div></>}
+            {tab === "model" && <div className="option-group visual-group"><b>HAIRSTYLE</b><div className="visual-choice-row">{hairStyles.map((n) => <button key={n} className={`visual-choice model-choice ${look.hairStyle === n ? "selected" : ""}`} onClick={() => patch({ hairStyle: n })}><span className="choice-preview portrait-preview"><KeriMannequin portrait look={preview({ hairStyle: n })} /></span><strong>Style {n}</strong>{look.hairStyle === n && <i>✓</i>}</button>)}</div></div>}
           </div>
         </div>
         <div className="designer-actions"><button className="reset-design" onClick={reset}>↻ Start Again</button><button className="finish-design" onClick={finishDesign}>✓ Finish Design</button></div>
