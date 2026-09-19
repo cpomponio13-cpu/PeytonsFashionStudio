@@ -5,8 +5,10 @@
    Scale the complete registered layer stack as one unit; never resize individual garments. */
 .keri-mirror .glam-model{width:520px;height:650px}
 .keri-home-mirror .glam-model{width:390px;height:500px}
-.gallery-model .glam-model,.choice-preview .glam-model{transform:translateX(-50%) scale(1.55);transform-origin:center bottom}
-.portrait-preview .glam-model{width:420px!important;height:620px!important;top:-105px!important}
+.gallery-model .glam-model,.choice-preview .glam-model{transform:translateX(-50%) scale(1.28);transform-origin:center bottom}
+.portrait-preview{overflow:hidden!important}
+.portrait-preview .glam-model{width:245px!important;height:360px!important;left:50%!important;top:-8px!important;bottom:auto!important;transform:translateX(-50%)!important;transform-origin:center top!important}
+.portrait-preview .glam-model .glam-layer{object-position:center top!important}
 @media(max-width:560px){
  .keri-mirror .glam-model{width:430px;height:560px}
  .keri-home-mirror .glam-model{width:330px;height:440px}
