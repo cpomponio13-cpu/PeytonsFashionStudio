@@ -3,14 +3,14 @@
 
 /* Glam Girl uses a 2048px registered canvas with more transparent margin than Keri.
    Scale the complete registered layer stack as one unit; never resize individual garments. */
-.keri-mirror .glam-model{width:520px;height:650px}
-.keri-home-mirror .glam-model{width:520px;height:650px}
+.keri-mirror .glam-model{width:820px;height:1025px;bottom:-185px}
+.keri-home-mirror .glam-model{width:760px;height:950px;bottom:-175px}
 .gallery-model .glam-model{transform:translateX(-50%) scale(1.62);transform-origin:center bottom}
 .choice-preview:not(.portrait-preview) .glam-model{transform:translateX(-50%) scale(1.48);transform-origin:center bottom}
 .portrait-preview{overflow:hidden!important}
 .portrait-preview .glam-model{width:245px!important;height:360px!important;left:50%!important;top:-8px!important;bottom:auto!important;transform:translateX(-50%)!important;transform-origin:center top!important}
 .portrait-preview .glam-model .glam-layer{object-position:center top!important}
 @media(max-width:560px){
- .keri-mirror .glam-model{width:430px;height:560px}
- .keri-home-mirror .glam-model{width:330px;height:440px}
+ .keri-mirror .glam-model{width:650px;height:810px;bottom:-145px}
+ .keri-home-mirror .glam-model{width:600px;height:750px;bottom:-135px}
 }
