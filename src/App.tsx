@@ -151,12 +151,18 @@ function App() {
     setScreen("design");
   };
   const topName = tops.find((x) => x.id === look.top)?.name ?? "Top",
-    bottomName = bottoms.find((x) => x.id === look.bottom)?.name ?? "Bottom";
+    bottomName = bottoms.find((x) => x.id === look.bottom)?.name ?? "Bottom",
+    dressName = dresses.find((x) => x.id === look.dress)?.name,
+    jacketName = jackets.find((x) => x.id === look.jacket)?.name,
+    shoesName = shoes.find((x) => x.id === look.shoes)?.name ?? "Shoes";
+  const outfitMain = dressName ?? `${topName} + ${bottomName}`;
+  const outfitExtras = [jacketName, shoesName].filter(Boolean).join(" • ");
+  const outfitName = [outfitMain, jacketName].filter(Boolean).join(" + ");
   const finishDesign = () => {
     const result = challenge.id === "free" ? null : scoreChallenge(challenge, look, features);
     const saved: SavedLook = {
       id: Date.now(),
-      name: `${topName} + ${bottomName}`,
+      name: outfitName,
       look: { ...look },
       features: [...features],
       challengeId: challenge.id,
@@ -307,7 +313,7 @@ function App() {
       <Header back />
       <section className="designer-page">
         <div className="designer-challenge"><span>{challenge.icon}</span><div><small>{challenge.id === "free" ? "FREE DESIGN" : "CURRENT CHALLENGE"}</small><strong>{challenge.title}</strong></div><button onClick={() => setChallenge(fashionChallenges[0])}>Change</button></div>
-        <div className="designer-workspace"><div className="designer-summary"><small>YOUR LOOK</small><h2>{topName}</h2><p>with {bottomName}</p></div><div className="designer-mirror keri-mirror"><KeriMannequin look={look} features={features} /></div><div className="designer-tip"><span>♡</span><strong>There are no wrong designs.</strong><p>Experiment until the look feels like yours.</p></div></div>
+        <div className="designer-workspace"><div className="designer-summary"><small>YOUR LOOK</small><h2>{outfitMain}</h2><p>{outfitExtras}</p></div><div className="designer-mirror keri-mirror"><KeriMannequin look={look} features={features} /></div><div className="designer-tip"><span>♡</span><strong>There are no wrong designs.</strong><p>Experiment until the look feels like yours.</p></div></div>
         <div className="design-drawer"><div className="drawer-tabs"><button className={tab === "clothing" ? "active" : ""} onClick={() => setTab("clothing")}>👗 <span>Clothing</span></button><button className={tab === "style" ? "active" : ""} onClick={() => setTab("style")}>🎨 <span>Style</span></button><button className={tab === "details" ? "active" : ""} onClick={() => setTab("details")}>✨ <span>Details</span></button><button className={tab === "model" ? "active" : ""} onClick={() => setTab("model")}>♡ <span>Model</span></button></div>
           <div className="drawer-options">
             {tab === "clothing" && <>
