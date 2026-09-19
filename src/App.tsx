@@ -48,7 +48,7 @@ type Garment = {
   id: number;
   name: string;
   rule: UnlockRule;
-  category: "top" | "bottom";
+  category: "top" | "bottom" | "dress" | "jacket" | "shoes";
 };
 const tops: Garment[] = wardrobeUnlocks
   .filter((x) => x.category === "top")
@@ -56,6 +56,10 @@ const tops: Garment[] = wardrobeUnlocks
 const bottoms: Garment[] = wardrobeUnlocks
   .filter((x) => x.category === "bottom")
   .map((x) => ({ ...x, category: "bottom" }));
+const dresses: Garment[] = wardrobeUnlocks.filter((x) => x.category === "dress").map((x) => ({ ...x, category: "dress" }));
+const jackets: Garment[] = wardrobeUnlocks.filter((x) => x.category === "jacket").map((x) => ({ ...x, category: "jacket" }));
+const shoes: Garment[] = wardrobeUnlocks.filter((x) => x.category === "shoes").map((x) => ({ ...x, category: "shoes" }));
+const allGarments = [...tops, ...bottoms, ...dresses, ...jackets, ...shoes];
 const hairStyles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const readGallery = (): SavedLook[] => {
   try {
@@ -163,7 +167,7 @@ function App() {
     };
     const next = [saved, ...gallery];
     const nextProgression = getProgression(next);
-    const garmentUnlocks = [...tops, ...bottoms]
+    const garmentUnlocks = allGarments
       .filter((g) => !meetsUnlock(g.rule, progression) && meetsUnlock(g.rule, nextProgression))
       .map((g) => `👗 ${g.name}`);
     const colourUnlocks = colourRewards
@@ -189,13 +193,13 @@ function App() {
       <div className="star-count" title="Best challenge stars">⭐ {progression.totalBestStars}</div>
     </header>
   );
-  const GarmentChoice = ({ item, type }: { item: Garment; type: "top" | "bottom" }) => {
+  const GarmentChoice = ({ item, type }: { item: Garment; type: "top" | "bottom" | "dress" | "jacket" | "shoes" }) => {
     const isUnlocked = unlocked(item),
       selected = look[type] === item.id;
     return (
       <button
         className={`visual-choice ${selected ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`}
-        onClick={() => isUnlocked && patch({ [type]: item.id })}
+        onClick={() => isUnlocked && patch(type === "dress" ? { dress: item.id } : type === "top" || type === "bottom" ? { [type]: item.id, dress: 0 } : { [type]: item.id })}
         disabled={!isUnlocked}
       >
         <span className="choice-preview">
@@ -265,7 +269,11 @@ function App() {
   }
   if (screen === "wardrobe")
     return (
-      <main className="app-shell"><Header back /><section className="collection-page"><p className="eyebrow">WARDROBE</p><h1>Your Clothing Collection</h1><p>Challenge achievements unlock extra clothing. You have unlocked {tops.filter(unlocked).length + bottoms.filter(unlocked).length} of {tops.length + bottoms.length} pieces.</p><p>⭐ {progression.totalBestStars} best stars • {progression.completedChallenges} challenges completed • {progression.threeStarChallenges} three-star challenges</p><div className="wardrobe-section"><h2>Tops</h2><div className="wardrobe-grid">{tops.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`t${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, top: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div><div className="wardrobe-section"><h2>Bottoms</h2><div className="wardrobe-grid">{bottoms.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`b${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, bottom: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div></section></main>
+      <main className="app-shell"><Header back /><section className="collection-page"><p className="eyebrow">WARDROBE</p><h1>Your Clothing Collection</h1><p>Challenge achievements unlock extra clothing. You have unlocked {allGarments.filter(unlocked).length} of {allGarments.length} pieces.</p><p>⭐ {progression.totalBestStars} best stars • {progression.completedChallenges} challenges completed • {progression.threeStarChallenges} three-star challenges</p><div className="wardrobe-section"><h2>Tops</h2><div className="wardrobe-grid">{tops.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`t${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, top: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div><div className="wardrobe-section"><h2>Bottoms</h2><div className="wardrobe-grid">{bottoms.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`b${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, bottom: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div>
+      <div className="wardrobe-section"><h2>Dresses</h2><div className="wardrobe-grid">{dresses.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`d${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, dress: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div>
+      <div className="wardrobe-section"><h2>Jackets</h2><div className="wardrobe-grid">{jackets.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`j${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, jacket: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div>
+      <div className="wardrobe-section"><h2>Shoes</h2><div className="wardrobe-grid">{shoes.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`s${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, shoes: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div>
+      </section></main>
     );
   if (screen === "gallery")
     return (
@@ -281,7 +289,7 @@ function App() {
         <section className="studio">
           <div className="welcome"><p className="eyebrow">WELCOME TO YOUR STUDIO</p><h1>Create something amazing.</h1><p className="welcome-text">Mix colours, add details, build outfits and save every design you love.</p></div>
           <div className="studio-floor">
-            <button className="studio-area wardrobe-area" onClick={() => setScreen("wardrobe")}><span className="area-icon">👗</span><span className="area-title">Wardrobe</span><span className="area-description">{tops.filter(unlocked).length + bottoms.filter(unlocked).length}/{tops.length + bottoms.length} pieces unlocked</span></button>
+            <button className="studio-area wardrobe-area" onClick={() => setScreen("wardrobe")}><span className="area-icon">👗</span><span className="area-title">Wardrobe</span><span className="area-description">{allGarments.filter(unlocked).length}/{allGarments.length} pieces unlocked</span></button>
             <button className="studio-area colours-area" onClick={() => setScreen("colours")}><span className="area-icon">🎨</span><span className="area-title">Colour Station</span><span className="area-description">{unlockedColourCount}/{colourRewards.length} special colours unlocked</span></button>
             <button className="studio-area features-area" onClick={() => setScreen("features")}><span className="area-icon">✨</span><span className="area-title">Feature Wall</span><span className="area-description">{unlockedFeatureCount}/{fashionFeatures.length} details unlocked</span></button>
             <button className="studio-area recipes-area" onClick={() => setScreen("recipes")}><span className="area-icon">📖</span><span className="area-title">Recipe Book</span><span className="area-description">{readRecipes().length} colour mixes discovered</span></button>
@@ -302,7 +310,13 @@ function App() {
         <div className="designer-workspace"><div className="designer-summary"><small>YOUR LOOK</small><h2>{topName}</h2><p>with {bottomName}</p></div><div className="designer-mirror keri-mirror"><KeriMannequin look={look} features={features} /></div><div className="designer-tip"><span>♡</span><strong>There are no wrong designs.</strong><p>Experiment until the look feels like yours.</p></div></div>
         <div className="design-drawer"><div className="drawer-tabs"><button className={tab === "clothing" ? "active" : ""} onClick={() => setTab("clothing")}>👗 <span>Clothing</span></button><button className={tab === "style" ? "active" : ""} onClick={() => setTab("style")}>🎨 <span>Style</span></button><button className={tab === "details" ? "active" : ""} onClick={() => setTab("details")}>✨ <span>Details</span></button><button className={tab === "model" ? "active" : ""} onClick={() => setTab("model")}>♡ <span>Model</span></button></div>
           <div className="drawer-options">
-            {tab === "clothing" && <><div className="option-group visual-group"><b>TOPS</b><div className="visual-choice-row">{tops.map((item) => <GarmentChoice key={item.id} item={item} type="top" />)}</div></div><div className="option-group visual-group"><b>BOTTOMS</b><div className="visual-choice-row">{bottoms.map((item) => <GarmentChoice key={item.id} item={item} type="bottom" />)}</div></div></>}
+            {tab === "clothing" && <>
+              <div className="option-group visual-group"><b>TOPS</b><div className="visual-choice-row">{tops.map((item) => <GarmentChoice key={item.id} item={item} type="top" />)}</div></div>
+              <div className="option-group visual-group"><b>BOTTOMS</b><div className="visual-choice-row">{bottoms.map((item) => <GarmentChoice key={item.id} item={item} type="bottom" />)}</div></div>
+              <div className="option-group visual-group"><b>DRESSES</b><div className="visual-choice-row">{dresses.map((item) => <GarmentChoice key={item.id} item={item} type="dress" />)}</div></div>
+              <div className="option-group visual-group"><b>JACKETS</b><div className="visual-choice-row">{jackets.map((item) => <GarmentChoice key={item.id} item={item} type="jacket" />)}</div></div>
+              <div className="option-group visual-group"><b>SHOES</b><div className="visual-choice-row">{shoes.map((item) => <GarmentChoice key={item.id} item={item} type="shoes" />)}</div></div>
+            </>}
             {tab === "style" && <div className="details-drawer"><div className="details-heading"><b>COLOURS</b><span>Full Glam Girl colour library coming next</span></div><p className="welcome-text">The starter pack currently uses the original supplied colour for each garment. We’ll wire the purchased colour variants here next.</p></div>}
             {tab === "details" && <div className="details-drawer"><div className="details-heading"><b>FEATURES</b><span>{features.length}/3 selected</span></div><div className="detail-choice-row">{fashionFeatures.map((f) => { const active = features.includes(f.id), isUnlocked = meetsUnlock(f.rule, progression); return <button key={f.id} className={`detail-choice ${active ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`} onClick={() => toggleFeature(f.id)} disabled={!isUnlocked}><span>{isUnlocked ? f.icon : "🔒"}</span><strong>{f.name}</strong><small>{isUnlocked ? f.kind : unlockLabel(f.rule)}</small>{active && <i>✓</i>}</button>; })}</div><button className="feature-wall-link" onClick={() => setScreen("features")}>Open Feature Wall →</button></div>}
             {tab === "model" && <div className="option-group visual-group"><b>HAIRSTYLE</b><div className="visual-choice-row">{hairStyles.map((n) => <button key={n} className={`visual-choice model-choice ${look.hairStyle === n ? "selected" : ""}`} onClick={() => patch({ hairStyle: n })}><span className="choice-preview portrait-preview"><KeriMannequin portrait look={preview({ hairStyle: n })} /></span><strong>Style {n}</strong>{look.hairStyle === n && <i>✓</i>}</button>)}</div></div>}
