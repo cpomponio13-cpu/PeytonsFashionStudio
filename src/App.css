@@ -1047,3 +1047,9 @@ button {
 .no-option-slash{position:absolute;left:14%;top:48%;width:72%;height:3px;border-radius:999px;background:#e53935;transform:rotate(-48deg);transform-origin:center;z-index:7;box-shadow:0 1px 2px #fff}
 .no-option-symbol{display:grid!important;place-items:center;color:#e53935!important;font-size:2.1rem!important;font-weight:900;line-height:1}
 .detail-choice.no-option-choice{position:relative}
+
+
+/* Party Time jewellery uses the real aligned Glam Girl accessory artwork */
+.jewellery-choice{min-width:108px}
+.jewellery-preview{position:relative;display:block;width:72px;height:72px;margin:0 auto 6px;border-radius:14px;background:linear-gradient(160deg,#fff,#f3eaf5);overflow:hidden}
+.jewellery-preview img{position:absolute;width:290px;height:auto;max-width:none;left:50%;top:50%;transform:translate(-50%,-50%);object-fit:contain}
