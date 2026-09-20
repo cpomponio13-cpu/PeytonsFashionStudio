@@ -86,9 +86,30 @@ const partyJewellery = [
   { key: "bracelet" as const, value: 3, name: "Party Bracelet" },
   { key: "bracelet" as const, value: 9, name: "Sparkle Bracelet" },
 ];
+const dinnerDressVariants = [
+  { dress: 6, style: 6, name: "Dinner Plum" },
+  { dress: 6, style: 10, name: "Dinner Pearl" },
+  { dress: 7, style: 8, name: "Evening Blue" },
+  { dress: 7, style: 14, name: "Evening Wine" },
+];
+const dinnerJacketVariants = [
+  { jacket: 3, style: 3, name: "Polished Blazer" },
+  { jacket: 3, style: 4, name: "Dinner Blazer" },
+];
+const dinnerShoeVariants = [
+  { shoes: 6, style: 1, name: "Classic Heels" },
+  { shoes: 6, style: 6, name: "Dinner Heels" },
+  { shoes: 6, style: 17, name: "Evening Heels" },
+];
+const dinnerJewellery = [
+  { key: "necklace" as const, value: 1, set: 2, name: "Dinner Necklace" },
+  { key: "necklace" as const, value: 9, set: 2, name: "Pearl Necklace" },
+  { key: "earrings" as const, value: 11, set: 2, name: "Dinner Earrings" },
+  { key: "earrings" as const, value: 16, set: 2, name: "Evening Earrings" },
+];
 const mysteryWardrobes:{id:MysteryId;icon:string;name:string;tagline:string;need:number;rewards:string}[]=[
  {id:"party",icon:"🎉",name:"Party Time",tagline:"Birthday dinners, celebrations and sparkle.",need:2,rewards:"6 dress colourways • 4 shoe colourways • 6 jewellery pieces"},
- {id:"dinner",icon:"🍽️",name:"Dinner Out",tagline:"A polished collection for somewhere special.",need:4,rewards:"Elegant dresses • jackets • heels • necklaces"},
+ {id:"dinner",icon:"🍽️",name:"Dinner Out",tagline:"A polished collection for somewhere special.",need:4,rewards:"4 dress colourways • 2 blazers • 3 heels • 4 jewellery pieces"},
  {id:"winter",icon:"❄️",name:"Winter Style",tagline:"Layer up and make cold weather fashionable.",need:6,rewards:"Coats • scarves • gloves • boots • stockings"},
  {id:"summer",icon:"🌴",name:"Summer Escape",tagline:"Holiday looks for sunshine and adventure.",need:8,rewards:"Shorts • light tops • swimwear • glasses"},
  {id:"city",icon:"🏙️",name:"City Style",tagline:"Smart, confident looks for a day in the city.",need:10,rewards:"Jackets • trousers • skirts • bags • glasses"},
@@ -140,6 +161,7 @@ function App() {
     [challenge, setChallenge] = useState<FashionChallenge>(fashionChallenges[0]);
   const progression = getProgression(gallery);
   const partyOpened = !!openedMysteries.party;
+  const dinnerOpened = !!openedMysteries.dinner;
   const unlocked = (g: Garment) => meetsUnlock(g.rule, progression);
   const nextReward = nearestLockedReward([
     ...wardrobeUnlocks.map((x) => ({ name: x.name, icon: "👗", rule: x.rule })),
@@ -393,7 +415,15 @@ function App() {
                 <div className="option-group visual-group"><b>DRESS COLOURWAYS</b><div className="visual-choice-row">{partyDressVariants.map((v)=><button key={`dress-${v.dress}-${v.style}`} className={`visual-choice ${look.dress===v.dress&&look.dressStyle===v.style?"selected":""}`} onClick={()=>patch({dress:v.dress,dressStyle:v.style})}><span className="choice-preview"><KeriMannequin look={preview({dress:v.dress,dressStyle:v.style})}/></span><strong>{v.name}</strong></button>)}</div></div>
                 <div className="option-group visual-group"><b>SHOE COLOURWAYS</b><div className="visual-choice-row">{partyShoeVariants.map((v)=>{const src=`/glamgirl/party-time/shoes-${v.shoes}_${v.style}.png`;return <button key={`shoe-${v.shoes}-${v.style}`} className={`visual-choice shoe-variant-choice ${look.shoes===v.shoes&&look.shoesStyle===v.style?"selected":""}`} onClick={()=>patch({shoes:v.shoes,shoesStyle:v.style})}><span className="shoe-preview"><img src={src} alt="" /></span><strong>{v.name}</strong>{look.shoes===v.shoes&&look.shoesStyle===v.style&&<i>✓</i>}</button>})}</div></div>
                 <div className="details-heading"><b>JEWELLERY</b><span>Mix and match your Party Time accessories</span></div>
-                <div className="detail-choice-row">{partyJewellery.map((item)=>{const active=look[item.key]===item.value;const src=`/glamgirl/party-time/${item.key==="earrings"?"earrings-1":item.key==="necklace"?"necklace-1":"bracelet-1"}_${item.value}.png`;return <button key={`${item.key}-${item.value}`} className={`detail-choice jewellery-choice jewellery-${item.key} ${active?"selected":""}`} onClick={()=>patch({[item.key]:active?0:item.value})}><span className="jewellery-preview"><img src={src} alt="" /></span><strong>{item.name}</strong>{active&&<i>✓</i>}</button>})}{(["necklace","earrings","bracelet"] as const).map((key)=><button key={`no-${key}`} className={`detail-choice no-option-choice ${look[key]===0?"selected":""}`} onClick={()=>patch({[key]:0})}><span className="no-option-symbol">／</span><strong>No {key.charAt(0).toUpperCase()+key.slice(1)}</strong>{look[key]===0&&<i>✓</i>}</button>)}</div>
+                <div className="detail-choice-row">{partyJewellery.map((item)=>{const active=look[item.key]===item.value&&((item.key==="necklace"?look.necklaceSet:look.earringsSet)||1)===1;const src=`/glamgirl/party-time/${item.key==="earrings"?"earrings-1":item.key==="necklace"?"necklace-1":"bracelet-1"}_${item.value}.png`;return <button key={`${item.key}-${item.value}`} className={`detail-choice jewellery-choice jewellery-${item.key} ${active?"selected":""}`} onClick={()=>patch(item.key==="necklace"?{necklace:active?0:item.value,necklaceSet:1}:item.key==="earrings"?{earrings:active?0:item.value,earringsSet:1}:{bracelet:active?0:item.value})}><span className="jewellery-preview"><img src={src} alt="" /></span><strong>{item.name}</strong>{active&&<i>✓</i>}</button>})}{(["necklace","earrings","bracelet"] as const).map((key)=><button key={`no-${key}`} className={`detail-choice no-option-choice ${look[key]===0?"selected":""}`} onClick={()=>patch({[key]:0})}><span className="no-option-symbol">／</span><strong>No {key.charAt(0).toUpperCase()+key.slice(1)}</strong>{look[key]===0&&<i>✓</i>}</button>)}</div>
+              </>}
+              <div className="details-heading"><b>DINNER OUT COLLECTION</b><span>{dinnerOpened ? "Mystery Wardrobe opened ✓" : "Open the Dinner Out Mystery Wardrobe to use these rewards"}</span></div>
+              {!dinnerOpened ? <p className="welcome-text">🍽️ Earn 4 challenge stars, then open Dinner Out from Mystery Wardrobes.</p> : <>
+                <div className="option-group visual-group"><b>DRESS COLOURWAYS</b><div className="visual-choice-row">{dinnerDressVariants.map((v)=><button key={`dinner-dress-${v.dress}-${v.style}`} className={`visual-choice ${look.dress===v.dress&&look.dressStyle===v.style?"selected":""}`} onClick={()=>patch({dress:v.dress,dressStyle:v.style})}><span className="choice-preview"><KeriMannequin look={preview({dress:v.dress,dressStyle:v.style})}/></span><strong>{v.name}</strong></button>)}</div></div>
+                <div className="option-group visual-group"><b>BLAZERS</b><div className="visual-choice-row">{dinnerJacketVariants.map((v)=><button key={`dinner-jacket-${v.jacket}-${v.style}`} className={`visual-choice ${look.jacket===v.jacket&&look.jacketStyle===v.style?"selected":""}`} onClick={()=>patch({jacket:v.jacket,jacketStyle:v.style})}><span className="choice-preview"><KeriMannequin look={preview({jacket:v.jacket,jacketStyle:v.style})}/></span><strong>{v.name}</strong></button>)}</div></div>
+                <div className="option-group visual-group"><b>HEELS</b><div className="visual-choice-row">{dinnerShoeVariants.map((v)=>{const src=`/glamgirl/dinner-out/shoes-${v.shoes}_${v.style}.png`;return <button key={`dinner-shoe-${v.shoes}-${v.style}`} className={`visual-choice shoe-variant-choice ${look.shoes===v.shoes&&look.shoesStyle===v.style?"selected":""}`} onClick={()=>patch({shoes:v.shoes,shoesStyle:v.style})}><span className="shoe-preview"><img src={src} alt="" /></span><strong>{v.name}</strong>{look.shoes===v.shoes&&look.shoesStyle===v.style&&<i>✓</i>}</button>})}</div></div>
+                <div className="details-heading"><b>JEWELLERY</b><span>Polished accessories for Dinner Out</span></div>
+                <div className="detail-choice-row">{dinnerJewellery.map((item)=>{const active=look[item.key]===item.value&&((item.key==="necklace"?look.necklaceSet:look.earringsSet)||1)===item.set;const src=`/glamgirl/dinner-out/${item.key==="earrings"?"earrings-2":"necklace-2"}_${item.value}.png`;return <button key={`dinner-${item.key}-${item.value}`} className={`detail-choice jewellery-choice jewellery-${item.key} ${active?"selected":""}`} onClick={()=>patch(item.key==="necklace"?{necklace:active?0:item.value,necklaceSet:item.set}:{earrings:active?0:item.value,earringsSet:item.set})}><span className="jewellery-preview"><img src={src} alt="" /></span><strong>{item.name}</strong>{active&&<i>✓</i>}</button>})}{(["necklace","earrings"] as const).map((key)=><button key={`dinner-no-${key}`} className={`detail-choice no-option-choice ${look[key]===0?"selected":""}`} onClick={()=>patch({[key]:0})}><span className="no-option-symbol">／</span><strong>No {key.charAt(0).toUpperCase()+key.slice(1)}</strong>{look[key]===0&&<i>✓</i>}</button>)}</div>
               </>}
             </div>}
             {tab === "details" && <div className="details-drawer"><div className="details-heading"><b>FEATURES</b><span>{features.length}/3 selected</span></div><div className="detail-choice-row">{fashionFeatures.map((f) => { const active = features.includes(f.id), isUnlocked = meetsUnlock(f.rule, progression); return <button key={f.id} className={`detail-choice ${active ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`} onClick={() => toggleFeature(f.id)} disabled={!isUnlocked}><span>{isUnlocked ? f.icon : "🔒"}</span><strong>{f.name}</strong><small>{isUnlocked ? f.kind : unlockLabel(f.rule)}</small>{active && <i>✓</i>}</button>; })}</div><button className="feature-wall-link" onClick={() => setScreen("features")}>Open Feature Wall →</button></div>}
