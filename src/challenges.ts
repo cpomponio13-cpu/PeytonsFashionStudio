@@ -13,15 +13,16 @@ export type FashionChallenge={
 }
 export type ChallengeScore={score:number;stars:number;matches:string[];message:string}
 
-// Every scored challenge deliberately has a valid path using starter clothing and
-// starter features. Progression rewards add more ways to interpret a brief; they
-// never become requirements for earning a strong challenge result.
+// Briefs are deliberately written around the Glam Girl fashion library: dressy
+// separates, dresses, jackets, heels and fashion details. They avoid requiring
+// sportswear, hoodies, basic tees or rugged outdoor clothing that is not available.
+// Progression rewards add more ways to interpret a brief; they never become requirements.
 export const fashionChallenges:FashionChallenge[]=[
  {id:'free',title:'Create a Look You Love!',brief:'No rules for this one. Make something that feels completely you.',icon:'💖',targetStyles:[],targetFeatures:[],targetTops:[],targetBottoms:[],bonus:'Free Design'},
  {id:'party',title:'Party Sparkle',brief:'Create a fun party look. Think bold colour, a dressier shape and one detail that catches the light.',icon:'✨',targetStyles:[3,5],targetFeatures:['sequins','metallic-detail'],targetTops:[2,3,5,8],targetBottoms:[3],bonus:'Bold colour • dressy shape • sparkle'},
- {id:'garden',title:'Garden Day',brief:'Design a fresh playful outfit for a day outdoors. Think light colour, an easy shape and a nature-inspired detail.',icon:'🌸',targetStyles:[6,2],targetFeatures:['floral-print','embroidery'],targetTops:[1,2,3,6,8],targetBottoms:[2,3],bonus:'Fresh colour • relaxed shape • nature detail'},
- {id:'street',title:'Street Style',brief:'Build a confident everyday look. Mix a strong colour with practical clothing and a graphic or useful detail.',icon:'🕶️',targetStyles:[4,5],targetFeatures:['pockets','stripes','colour-blocking'],targetTops:[1,4,5,7,8],targetBottoms:[1,2],bonus:'Strong colour • everyday shape • graphic detail'},
- {id:'classic',title:'Classic With A Twist',brief:'Create a polished outfit, then give it one unexpected detail. Think clean colour, neat shapes and a finishing touch.',icon:'🎀',targetStyles:[1,3],targetFeatures:['contrast-trim','belt','lace','ruffles'],targetTops:[2,3,5,9],targetBottoms:[1,3],bonus:'Polished colour • neat shape • special detail'},
+ {id:'garden',title:'Birthday Lunch',brief:'Create a bright, polished look for a birthday lunch somewhere special. Think cheerful colour, a pretty silhouette and one playful detail.',icon:'🎂',targetStyles:[6,2],targetFeatures:['floral-print','embroidery','ruffles'],targetTops:[1,2,3,5,6],targetBottoms:[1,3,4,5],bonus:'Cheerful colour • polished shape • playful detail'},
+ {id:'street',title:'City Day',brief:'Put together a confident fashion look for shopping, lunch and exploring the city. Mix a strong colour with stylish separates and a finishing detail.',icon:'🏙️',targetStyles:[4,5],targetFeatures:['pockets','stripes','colour-blocking','belt'],targetTops:[1,2,3,4,5,6],targetBottoms:[1,2,3,4,5,6,7],bonus:'Strong colour • stylish separates • finishing detail'},
+ {id:'classic',title:'Dinner With A Twist',brief:'Create a polished dinner look, then add one unexpected fashion detail. Think elegant colour, a neat silhouette and a memorable finishing touch.',icon:'🍽️',targetStyles:[1,3],targetFeatures:['contrast-trim','belt','lace','ruffles','metallic-detail'],targetTops:[2,3,4,5,6],targetBottoms:[1,3,5,7],bonus:'Elegant colour • polished shape • special detail'},
 ]
 
 export function scoreChallenge(challenge:FashionChallenge,look:KeriLook,features:string[]):ChallengeScore{
