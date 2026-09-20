@@ -379,6 +379,7 @@ function App() {
               <div className="option-group visual-group">
                 <b>{clothingCategory.toUpperCase()}{clothingCategory==="dress"||clothingCategory==="shoes"?"ES":clothingCategory==="bottom"?"S":"S"}</b>
                 <div className="visual-choice-row">
+                  {clothingCategory==="jacket"&&<button className={`visual-choice ${look.jacket===0?"selected":""}`} onClick={()=>patch({jacket:0})}><span className="choice-preview"><KeriMannequin look={preview({jacket:0})}/></span><strong>No Jacket</strong>{look.jacket===0&&<i>✓</i>}</button>}
                   {(clothingCategory==="top"?tops:clothingCategory==="bottom"?bottoms:clothingCategory==="dress"?dresses:clothingCategory==="jacket"?jackets:shoes)
                     .map((item)=><GarmentChoice key={item.id} item={item} type={clothingCategory}/>)}
                 </div>
