@@ -1025,3 +1025,10 @@ button {
     grid-template-columns: 1fr;
   }
 }
+
+/* Compact category browser for the expanded Glam Girl wardrobe */
+.clothing-browser{width:100%}
+.clothing-category-tabs{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;padding:14px 18px 8px}
+.clothing-category-tabs button{border:1px solid #eadcea;background:#fff;border-radius:999px;padding:9px 18px;font:inherit;font-weight:700;color:#6d3f70;cursor:pointer}
+.clothing-category-tabs button.active{background:#f7dcec;border-color:#df72a8;color:#5a275e;box-shadow:0 2px 8px rgba(83,45,91,.08)}
+@media(max-width:720px){.clothing-category-tabs{gap:7px;padding:10px 8px 6px}.clothing-category-tabs button{padding:8px 12px;font-size:12px}}
