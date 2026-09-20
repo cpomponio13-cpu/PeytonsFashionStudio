@@ -94,6 +94,7 @@ const rewardProgress = (rule: UnlockRule, p: ProgressionSnapshot) =>
 function App() {
   const [screen, setScreen] = useState<Screen>("home"),
     [tab, setTab] = useState<Tab>("clothing"),
+    [clothingCategory, setClothingCategory] = useState<Garment["category"]>("top"),
     [look, setLook] = useState<KeriLook>(defaultKeriLook),
     [gallery, setGallery] = useState<SavedLook[]>(readGallery),
     [finished, setFinished] = useState<SavedLook | null>(null),
@@ -316,13 +317,22 @@ function App() {
         <div className="designer-workspace"><div className="designer-summary"><small>YOUR LOOK</small><h2>{outfitMain}</h2><p>{outfitExtras}</p></div><div className="designer-mirror keri-mirror"><KeriMannequin look={look} features={features} /></div><div className="designer-tip"><span>♡</span><strong>There are no wrong designs.</strong><p>Experiment until the look feels like yours.</p></div></div>
         <div className="design-drawer"><div className="drawer-tabs"><button className={tab === "clothing" ? "active" : ""} onClick={() => setTab("clothing")}>👗 <span>Clothing</span></button><button className={tab === "style" ? "active" : ""} onClick={() => setTab("style")}>🎨 <span>Style</span></button><button className={tab === "details" ? "active" : ""} onClick={() => setTab("details")}>✨ <span>Details</span></button><button className={tab === "model" ? "active" : ""} onClick={() => setTab("model")}>♡ <span>Model</span></button></div>
           <div className="drawer-options">
-            {tab === "clothing" && <>
-              <div className="option-group visual-group"><b>TOPS</b><div className="visual-choice-row">{tops.map((item) => <GarmentChoice key={item.id} item={item} type="top" />)}</div></div>
-              <div className="option-group visual-group"><b>BOTTOMS</b><div className="visual-choice-row">{bottoms.map((item) => <GarmentChoice key={item.id} item={item} type="bottom" />)}</div></div>
-              <div className="option-group visual-group"><b>DRESSES</b><div className="visual-choice-row">{dresses.map((item) => <GarmentChoice key={item.id} item={item} type="dress" />)}</div></div>
-              <div className="option-group visual-group"><b>JACKETS</b><div className="visual-choice-row">{jackets.map((item) => <GarmentChoice key={item.id} item={item} type="jacket" />)}</div></div>
-              <div className="option-group visual-group"><b>SHOES</b><div className="visual-choice-row">{shoes.map((item) => <GarmentChoice key={item.id} item={item} type="shoes" />)}</div></div>
-            </>}
+            {tab === "clothing" && <div className="clothing-browser">
+              <div className="clothing-category-tabs">
+                {([
+                  ["top","Tops"],["bottom","Bottoms"],["dress","Dresses"],["jacket","Jackets"],["shoes","Shoes"]
+                ] as [Garment["category"],string][]).map(([category,label]) =>
+                  <button key={category} className={clothingCategory===category?"active":""} onClick={()=>setClothingCategory(category)}>{label}</button>
+                )}
+              </div>
+              <div className="option-group visual-group">
+                <b>{clothingCategory.toUpperCase()}{clothingCategory==="dress"||clothingCategory==="shoes"?"ES":clothingCategory==="bottom"?"S":"S"}</b>
+                <div className="visual-choice-row">
+                  {(clothingCategory==="top"?tops:clothingCategory==="bottom"?bottoms:clothingCategory==="dress"?dresses:clothingCategory==="jacket"?jackets:shoes)
+                    .map((item)=><GarmentChoice key={item.id} item={item} type={clothingCategory}/>)}
+                </div>
+              </div>
+            </div>}
             {tab === "style" && <div className="details-drawer"><div className="details-heading"><b>COLOURS</b><span>Full Glam Girl colour library coming next</span></div><p className="welcome-text">The starter pack currently uses the original supplied colour for each garment. We’ll wire the purchased colour variants here next.</p></div>}
             {tab === "details" && <div className="details-drawer"><div className="details-heading"><b>FEATURES</b><span>{features.length}/3 selected</span></div><div className="detail-choice-row">{fashionFeatures.map((f) => { const active = features.includes(f.id), isUnlocked = meetsUnlock(f.rule, progression); return <button key={f.id} className={`detail-choice ${active ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`} onClick={() => toggleFeature(f.id)} disabled={!isUnlocked}><span>{isUnlocked ? f.icon : "🔒"}</span><strong>{f.name}</strong><small>{isUnlocked ? f.kind : unlockLabel(f.rule)}</small>{active && <i>✓</i>}</button>; })}</div><button className="feature-wall-link" onClick={() => setScreen("features")}>Open Feature Wall →</button></div>}
             {tab === "model" && <div className="option-group visual-group"><b>HAIRSTYLE</b><div className="visual-choice-row">{hairStyles.map((n) => <button key={n} className={`visual-choice model-choice ${look.hairStyle === n ? "selected" : ""}`} onClick={() => patch({ hairStyle: n })}><span className="choice-preview portrait-preview"><KeriMannequin portrait look={preview({ hairStyle: n })} /></span><strong>Style {n}</strong>{look.hairStyle === n && <i>✓</i>}</button>)}</div></div>}
