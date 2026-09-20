@@ -64,8 +64,30 @@ const jackets: Garment[] = wardrobeUnlocks.filter((x) => x.category === "jacket"
 const shoes: Garment[] = wardrobeUnlocks.filter((x) => x.category === "shoes").map((x) => ({ ...x, category: "shoes" }));
 const allGarments = [...tops, ...bottoms, ...dresses, ...jackets, ...shoes];
 const hairStyles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const partyDressVariants = [
+  { dress: 4, style: 2, name: "Party Pink" },
+  { dress: 4, style: 5, name: "Party Pop" },
+  { dress: 4, style: 8, name: "Party Bright" },
+  { dress: 5, style: 3, name: "Cocktail Rose" },
+  { dress: 5, style: 7, name: "Cocktail Glow" },
+  { dress: 5, style: 12, name: "Cocktail Night" },
+];
+const partyShoeVariants = [
+  { shoes: 2, style: 4, name: "Celebration Shoes" },
+  { shoes: 2, style: 8, name: "Party Shoes" },
+  { shoes: 4, style: 3, name: "Dinner Shoes" },
+  { shoes: 4, style: 10, name: "Statement Heels" },
+];
+const partyJewellery = [
+  { key: "necklace" as const, value: 2, name: "Party Necklace" },
+  { key: "necklace" as const, value: 6, name: "Sparkle Necklace" },
+  { key: "earrings" as const, value: 2, name: "Party Earrings" },
+  { key: "earrings" as const, value: 7, name: "Sparkle Earrings" },
+  { key: "bracelet" as const, value: 3, name: "Party Bracelet" },
+  { key: "bracelet" as const, value: 9, name: "Sparkle Bracelet" },
+];
 const mysteryWardrobes:{id:MysteryId;icon:string;name:string;tagline:string;need:number;rewards:string}[]=[
- {id:"party",icon:"🎉",name:"Party Time",tagline:"Birthday dinners, celebrations and sparkle.",need:2,rewards:"Party dresses • dress shoes • jewellery • bright colourways"},
+ {id:"party",icon:"🎉",name:"Party Time",tagline:"Birthday dinners, celebrations and sparkle.",need:2,rewards:"6 dress colourways • 4 shoe colourways • 6 jewellery pieces"},
  {id:"dinner",icon:"🍽️",name:"Dinner Out",tagline:"A polished collection for somewhere special.",need:4,rewards:"Elegant dresses • jackets • heels • necklaces"},
  {id:"winter",icon:"❄️",name:"Winter Style",tagline:"Layer up and make cold weather fashionable.",need:6,rewards:"Coats • scarves • gloves • boots • stockings"},
  {id:"summer",icon:"🌴",name:"Summer Escape",tagline:"Holiday looks for sunshine and adventure.",need:8,rewards:"Shorts • light tops • swimwear • glasses"},
@@ -117,6 +139,7 @@ function App() {
     [features, setFeatures] = useState<string[]>(readFeatures),
     [challenge, setChallenge] = useState<FashionChallenge>(fashionChallenges[0]);
   const progression = getProgression(gallery);
+  const partyOpened = !!openedMysteries.party;
   const unlocked = (g: Garment) => meetsUnlock(g.rule, progression);
   const nextReward = nearestLockedReward([
     ...wardrobeUnlocks.map((x) => ({ name: x.name, icon: "👗", rule: x.rule })),
@@ -361,7 +384,15 @@ function App() {
                 </div>
               </div>
             </div>}
-            {tab === "style" && <div className="details-drawer"><div className="details-heading"><b>COLOURS</b><span>Full Glam Girl colour library coming next</span></div><p className="welcome-text">The starter pack currently uses the original supplied colour for each garment. We’ll wire the purchased colour variants here next.</p></div>}
+            {tab === "style" && <div className="details-drawer">
+              <div className="details-heading"><b>PARTY TIME COLLECTION</b><span>{partyOpened ? "Mystery Wardrobe opened ✓" : "Open the Party Time Mystery Wardrobe to use these rewards"}</span></div>
+              {!partyOpened ? <p className="welcome-text">🎁 Earn 2 challenge stars, then open Party Time from Mystery Wardrobes.</p> : <>
+                <div className="option-group visual-group"><b>DRESS COLOURWAYS</b><div className="visual-choice-row">{partyDressVariants.map((v)=><button key={`dress-${v.dress}-${v.style}`} className={`visual-choice ${look.dress===v.dress&&look.dressStyle===v.style?"selected":""}`} onClick={()=>patch({dress:v.dress,dressStyle:v.style})}><span className="choice-preview"><KeriMannequin look={preview({dress:v.dress,dressStyle:v.style})}/></span><strong>{v.name}</strong></button>)}</div></div>
+                <div className="option-group visual-group"><b>SHOE COLOURWAYS</b><div className="visual-choice-row">{partyShoeVariants.map((v)=><button key={`shoe-${v.shoes}-${v.style}`} className={`visual-choice ${look.shoes===v.shoes&&look.shoesStyle===v.style?"selected":""}`} onClick={()=>patch({shoes:v.shoes,shoesStyle:v.style})}><span className="choice-preview"><KeriMannequin look={preview({shoes:v.shoes,shoesStyle:v.style})}/></span><strong>{v.name}</strong></button>)}</div></div>
+                <div className="details-heading"><b>JEWELLERY</b><span>Mix and match your Party Time accessories</span></div>
+                <div className="detail-choice-row">{partyJewellery.map((item)=>{const active=look[item.key]===item.value;return <button key={`${item.key}-${item.value}`} className={`detail-choice ${active?"selected":""}`} onClick={()=>patch({[item.key]:active?0:item.value})}><span>✨</span><strong>{item.name}</strong>{active&&<i>✓</i>}</button>})}<button className="detail-choice" onClick={()=>patch({necklace:0,earrings:0,bracelet:0})}><span>♡</span><strong>No Jewellery</strong></button></div>
+              </>}
+            </div>}
             {tab === "details" && <div className="details-drawer"><div className="details-heading"><b>FEATURES</b><span>{features.length}/3 selected</span></div><div className="detail-choice-row">{fashionFeatures.map((f) => { const active = features.includes(f.id), isUnlocked = meetsUnlock(f.rule, progression); return <button key={f.id} className={`detail-choice ${active ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`} onClick={() => toggleFeature(f.id)} disabled={!isUnlocked}><span>{isUnlocked ? f.icon : "🔒"}</span><strong>{f.name}</strong><small>{isUnlocked ? f.kind : unlockLabel(f.rule)}</small>{active && <i>✓</i>}</button>; })}</div><button className="feature-wall-link" onClick={() => setScreen("features")}>Open Feature Wall →</button></div>}
             {tab === "model" && <div className="option-group visual-group"><b>HAIRSTYLE</b><div className="visual-choice-row">{hairStyles.map((n) => <button key={n} className={`visual-choice model-choice ${look.hairStyle === n ? "selected" : ""}`} onClick={() => patch({ hairStyle: n })}><span className="choice-preview portrait-preview"><KeriMannequin portrait look={preview({ hairStyle: n })} /></span><strong>Style {n}</strong>{look.hairStyle === n && <i>✓</i>}</button>)}</div></div>}
           </div>
