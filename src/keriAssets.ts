@@ -6,14 +6,18 @@ export type KeriLook = {
  eyeColour:number
  top:number
  topStyle:number
+ topSet:number
  bottom:number
  bottomStyle:number
+ bottomSet:number
  dress:number
  dressStyle:number
  jacket:number
  jacketStyle:number
+ jacketSet:number
  shoes:number
  shoesStyle:number
+ shoesSet:number
  necklace:number
  necklaceSet:number
  earrings:number
@@ -29,14 +33,18 @@ export const defaultKeriLook:KeriLook={
  eyeColour:1,
  top:1,
  topStyle:1,
+ topSet:1,
  bottom:1,
  bottomStyle:1,
+ bottomSet:1,
  dress:0,
  dressStyle:1,
  jacket:0,
  jacketStyle:1,
+ jacketSet:1,
  shoes:1,
  shoesStyle:1,
+ shoesSet:1,
  necklace:0,
  necklaceSet:1,
  earrings:0,
