@@ -1071,3 +1071,9 @@ button {
 /* Standard shoe picker: crop the source canvas tightly around the feet */
 .standard-shoe-preview{position:relative;overflow:hidden}
 .standard-shoe-preview .standard-shoe-image{position:absolute;width:470px;height:auto;max-width:none;left:50%;bottom:-6px;transform:translateX(-50%);object-fit:contain}
+
+
+/* Wardrobe shoe collection uses the same footwear-focused crop as Design Studio */
+.wardrobe-shoe-preview{position:relative;overflow:hidden}
+.wardrobe-shoe-preview img{position:absolute;width:760px;height:auto;max-width:none;left:50%;bottom:-10px;transform:translateX(-50%);object-fit:contain}
+.wardrobe-locked .wardrobe-shoe-preview img{filter:grayscale(.15);opacity:.72}
