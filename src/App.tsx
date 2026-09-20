@@ -34,6 +34,8 @@ type Screen =
   | "finished"
   | "mystery";
 type Tab = "clothing" | "style" | "details" | "model";
+type MysteryId="party"|"dinner"|"winter"|"summer"|"city"|"redcarpet"|"fantasy";
+type MysteryOpened=Partial<Record<MysteryId,boolean>>;
 type SavedLook = {
   id: number;
   name: string;
@@ -62,7 +64,7 @@ const jackets: Garment[] = wardrobeUnlocks.filter((x) => x.category === "jacket"
 const shoes: Garment[] = wardrobeUnlocks.filter((x) => x.category === "shoes").map((x) => ({ ...x, category: "shoes" }));
 const allGarments = [...tops, ...bottoms, ...dresses, ...jackets, ...shoes];
 const hairStyles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const mysteryWardrobes=[
+const mysteryWardrobes:{id:MysteryId;icon:string;name:string;tagline:string;need:number;rewards:string}[]=[
  {id:"party",icon:"🎉",name:"Party Time",tagline:"Birthday dinners, celebrations and sparkle.",need:2,rewards:"Party dresses • dress shoes • jewellery • bright colourways"},
  {id:"dinner",icon:"🍽️",name:"Dinner Out",tagline:"A polished collection for somewhere special.",need:4,rewards:"Elegant dresses • jackets • heels • necklaces"},
  {id:"winter",icon:"❄️",name:"Winter Style",tagline:"Layer up and make cold weather fashionable.",need:6,rewards:"Coats • scarves • gloves • boots • stockings"},
@@ -106,6 +108,8 @@ function App() {
   const [screen, setScreen] = useState<Screen>("home"),
     [tab, setTab] = useState<Tab>("clothing"),
     [clothingCategory, setClothingCategory] = useState<Garment["category"]>("top"),
+    [openedMysteries, setOpenedMysteries] = useState<MysteryOpened>(()=>{try{return JSON.parse(localStorage.getItem("pfs-mystery-opened")||"{}")}catch{return {}}}),
+    [mysteryReveal, setMysteryReveal] = useState<(typeof mysteryWardrobes)[number]|null>(null),
     [look, setLook] = useState<KeriLook>(defaultKeriLook),
     [gallery, setGallery] = useState<SavedLook[]>(readGallery),
     [finished, setFinished] = useState<SavedLook | null>(null),
@@ -200,6 +204,12 @@ function App() {
     setNewUnlock([...garmentUnlocks, ...colourUnlocks, ...featureUnlocks].join(" • ") || null);
     setScreen("finished");
   };
+  const openMystery=(box:(typeof mysteryWardrobes)[number])=>{
+    if(progression.totalBestStars<box.need||openedMysteries[box.id])return;
+    const next={...openedMysteries,[box.id]:true}; setOpenedMysteries(next);
+    localStorage.setItem("pfs-mystery-opened",JSON.stringify(next)); setMysteryReveal(box);
+  };
+
   const Header = ({ back = false }: { back?: boolean }) => (
     <header className="top-bar">
       {back ? (
@@ -295,7 +305,9 @@ function App() {
     );
   if (screen === "mystery")
     return (
-      <main className="app-shell"><Header back /><section className="collection-page mystery-page"><p className="eyebrow">DESIGNER REWARDS</p><h1>Mystery Wardrobes 🎁</h1><p>Complete briefs and collect stars to discover new themed fashion collections.</p><div className="mystery-grid">{mysteryWardrobes.map((box)=>{const open=progression.totalBestStars>=box.need;return <article className={`mystery-box ${open?"mystery-open":""}`} key={box.id}><span className="mystery-icon">{open?box.icon:"🔒"}</span><small>{open?"WARDROBE DISCOVERED":`${progression.totalBestStars}/${box.need} STARS`}</small><h2>{open?box.name:"Mystery Wardrobe"}</h2><p>{open?box.tagline:"Keep designing to reveal this collection."}</p><div className="mystery-rewards">{open?box.rewards:"? • ? • ? • ?"}</div></article>})}</div><p className="mystery-note">More collections will appear as Peyton's studio grows.</p></section></main>
+      <main className="app-shell"><Header back /><section className="collection-page mystery-page"><p className="eyebrow">DESIGNER REWARDS</p><h1>Mystery Wardrobes 🎁</h1><p>Complete briefs and collect stars to discover new themed fashion collections.</p>
+      {mysteryReveal&&<div className="mystery-reveal"><div className="mystery-reveal-card"><span>🎁✨</span><small>NEW WARDROBE OPENED</small><h2>{mysteryReveal.icon} {mysteryReveal.name}</h2><p>{mysteryReveal.tagline}</p><strong>{mysteryReveal.rewards}</strong><button onClick={()=>setMysteryReveal(null)}>Add to my studio ✓</button></div></div>}
+      <div className="mystery-grid">{mysteryWardrobes.map((box)=>{const earned=progression.totalBestStars>=box.need,opened=!!openedMysteries[box.id];return <article className={`mystery-box ${earned?"mystery-earned":""} ${opened?"mystery-open":""}`} key={box.id}><span className="mystery-icon">{opened?box.icon:earned?"🎁":"🔒"}</span><small>{opened?"WARDROBE OPENED":earned?"READY TO OPEN":`${progression.totalBestStars}/${box.need} STARS`}</small><h2>{opened?box.name:earned?"Mystery Wardrobe Ready!":"Mystery Wardrobe"}</h2><p>{opened?box.tagline:earned?"You earned this collection. Open it to discover what is inside.":"Keep designing to reveal this collection."}</p><div className="mystery-rewards">{opened?box.rewards:"? • ? • ? • ?"}</div>{earned&&!opened&&<button className="open-mystery-button" onClick={()=>openMystery(box)}>Open Mystery Wardrobe 🎁</button>}</article>})}</div><p className="mystery-note">More collections will appear as Peyton's studio grows.</p></section></main>
     );
   if (screen === "gallery")
     return (
@@ -318,7 +330,7 @@ function App() {
             <button className="studio-area gallery-area" onClick={() => setScreen("gallery")}><span className="area-icon">🖼️</span><span className="area-title">Fashion Gallery</span><span className="area-description">{gallery.length} looks saved</span></button>
             <button className="design-studio" onClick={() => setScreen("design")}><div className="mirror keri-home-mirror"><div className="mirror-shine" /><KeriMannequin look={look} features={features} /></div><div className="design-studio-label"><span className="design-icon">✦</span><div><strong>Design Studio</strong><small>Create a new fashion look</small></div><span className="arrow">→</span></div></button>
           </div>
-          <div className="mystery-home-card"><span>🎁</span><div><small>MYSTERY WARDROBES</small><strong>Unlock new fashion collections</strong><p>{mysteryWardrobes.filter((box)=>progression.totalBestStars>=box.need).length}/{mysteryWardrobes.length} wardrobes discovered</p></div><button onClick={()=>setScreen("mystery")}>Explore →</button></div>
+          <div className="mystery-home-card"><span>🎁</span><div><small>MYSTERY WARDROBES</small><strong>Unlock new fashion collections</strong><p>{mysteryWardrobes.filter((box)=>openedMysteries[box.id]).length}/{mysteryWardrobes.length} wardrobes opened</p></div><button onClick={()=>setScreen("mystery")}>Explore →</button></div>
           <ChallengeCard challenge={nextChallenge} progress={challengeProgress[nextChallenge.id]} onStart={() => startChallenge(nextChallenge)} />
         </section>
         <footer className="studio-footer"><span>♡ Designed for Peyton</span><span>✦ Create • Experiment • Express</span></footer>
