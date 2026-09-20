@@ -13,17 +13,20 @@ export type GlamLook = {
   dress:number
   dressStyle:number
   jacket:number
+  jacketStyle:number
   shoes:number
   shoesStyle:number
   necklace:number
+  necklaceSet:number
   earrings:number
+  earringsSet:number
   bracelet:number
 }
 
 export const defaultGlamLook:GlamLook={
   skin:1,hairStyle:1,hairColour:1,eyes:1,eyeColour:1,
   top:1,topStyle:1,bottom:1,bottomStyle:1,dress:0,dressStyle:1,
-  jacket:0,shoes:1,shoesStyle:1,necklace:0,earrings:0,bracelet:0
+  jacket:0,jacketStyle:1,shoes:1,shoesStyle:1,necklace:0,necklaceSet:1,earrings:0,earringsSet:1,bracelet:0
 }
 
 const layer=(src:string)=>src
@@ -44,16 +47,27 @@ const bottomAsset=(id:number)=>{
 
 const topAsset=(id:number)=>`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
 const partyDressStyles:Record<number,number[]>={4:[2,5,8],5:[3,7,12]}
+const dinnerDressStyles:Record<number,number[]>={6:[6,10],7:[8,14]}
 const partyShoeStyles:Record<number,number[]>={2:[4,8],4:[3,10]}
+const dinnerShoeStyles:Record<number,number[]>={6:[1,6,17]}
+const dinnerJacketStyles:Record<number,number[]>={3:[3,4]}
 const variantAsset=(kind:'dress'|'shoes',id:number,style:number)=>{
- const allowed=kind==='dress'?partyDressStyles[id]:partyShoeStyles[id]
- return allowed?.includes(style)?`/glamgirl/party-time/${kind}-${id}_${style}.png`:
+ const dinnerAllowed=kind==='dress'?dinnerDressStyles[id]:dinnerShoeStyles[id]
+ if(dinnerAllowed?.includes(style))return `/glamgirl/dinner-out/${kind}-${id}_${style}.png`
+ const partyAllowed=kind==='dress'?partyDressStyles[id]:partyShoeStyles[id]
+ return partyAllowed?.includes(style)?`/glamgirl/party-time/${kind}-${id}_${style}.png`:
   kind==='dress'?`/glamgirl/dresses/dress-${id}_1.png`:`/glamgirl/shoes/shoes-${id}_1.png`
 }
 
 const glamLayers=(look:GlamLook)=>{
  const dress=look.dress>0?variantAsset('dress',Math.max(1,Math.min(7,look.dress)),look.dressStyle||1):undefined
- const jacket=look.jacket>0?`/glamgirl/jackets/jacket-${Math.max(1,Math.min(6,look.jacket))}_1.png`:undefined
+ const jacketId=Math.max(1,Math.min(6,look.jacket))
+ const jacketStyle=look.jacketStyle||1
+ const jacket=look.jacket>0
+  ? dinnerJacketStyles[jacketId]?.includes(jacketStyle)
+   ? `/glamgirl/dinner-out/jacket-${jacketId}_${jacketStyle}.png`
+   : `/glamgirl/jackets/jacket-${jacketId}_1.png`
+  : undefined
  const shoes=variantAsset('shoes',Math.max(1,Math.min(6,look.shoes||1)),look.shoesStyle||1)
  const hair=hairLayers(look.hairStyle)
  return [
@@ -70,9 +84,9 @@ const glamLayers=(look:GlamLook)=>{
   dress,
   jacket,
   shoes,
-  look.necklace>0?`/glamgirl/party-time/necklace-1_${look.necklace}.png`:undefined,
+  look.necklace>0?`/glamgirl/${look.necklaceSet===2?'dinner-out':'party-time'}/necklace-${look.necklaceSet||1}_${look.necklace}.png`:undefined,
   look.bracelet>0?`/glamgirl/party-time/bracelet-1_${look.bracelet}.png`:undefined,
-  look.earrings>0?`/glamgirl/party-time/earrings-1_${look.earrings}.png`:undefined,
+  look.earrings>0?`/glamgirl/${look.earringsSet===2?'dinner-out':'party-time'}/earrings-${look.earringsSet||1}_${look.earrings}.png`:undefined,
   hair.front,
  ].filter(Boolean) as string[]
 }
