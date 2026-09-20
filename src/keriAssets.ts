@@ -11,10 +11,13 @@ export type KeriLook = {
  dress:number
  dressStyle:number
  jacket:number
+ jacketStyle:number
  shoes:number
  shoesStyle:number
  necklace:number
+ necklaceSet:number
  earrings:number
+ earringsSet:number
  bracelet:number
 }
 
@@ -31,9 +34,12 @@ export const defaultKeriLook:KeriLook={
  dress:0,
  dressStyle:1,
  jacket:0,
+ jacketStyle:1,
  shoes:1,
  shoesStyle:1,
  necklace:0,
+ necklaceSet:1,
  earrings:0,
+ earringsSet:1,
  bracelet:0,
 }
