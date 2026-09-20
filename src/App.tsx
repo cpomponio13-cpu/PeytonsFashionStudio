@@ -31,7 +31,8 @@ type Screen =
   | "features"
   | "recipes"
   | "gallery"
-  | "finished";
+  | "finished"
+  | "mystery";
 type Tab = "clothing" | "style" | "details" | "model";
 type SavedLook = {
   id: number;
@@ -61,6 +62,16 @@ const jackets: Garment[] = wardrobeUnlocks.filter((x) => x.category === "jacket"
 const shoes: Garment[] = wardrobeUnlocks.filter((x) => x.category === "shoes").map((x) => ({ ...x, category: "shoes" }));
 const allGarments = [...tops, ...bottoms, ...dresses, ...jackets, ...shoes];
 const hairStyles = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const mysteryWardrobes=[
+ {id:"party",icon:"🎉",name:"Party Time",tagline:"Birthday dinners, celebrations and sparkle.",need:2,rewards:"Party dresses • dress shoes • jewellery • bright colourways"},
+ {id:"dinner",icon:"🍽️",name:"Dinner Out",tagline:"A polished collection for somewhere special.",need:4,rewards:"Elegant dresses • jackets • heels • necklaces"},
+ {id:"winter",icon:"❄️",name:"Winter Style",tagline:"Layer up and make cold weather fashionable.",need:6,rewards:"Coats • scarves • gloves • boots • stockings"},
+ {id:"summer",icon:"🌴",name:"Summer Escape",tagline:"Holiday looks for sunshine and adventure.",need:8,rewards:"Shorts • light tops • swimwear • glasses"},
+ {id:"city",icon:"🏙️",name:"City Style",tagline:"Smart, confident looks for a day in the city.",need:10,rewards:"Jackets • trousers • skirts • bags • glasses"},
+ {id:"redcarpet",icon:"✨",name:"Red Carpet",tagline:"Create a show-stopping special-event look.",need:12,rewards:"Eveningwear • statement shoes • jewellery • glam colours"},
+ {id:"fantasy",icon:"👑",name:"Fantasy Fashion",tagline:"The designer vault where anything can happen.",need:15,rewards:"Capes • statement pieces • metallics • surprise accessories"},
+];
+
 const readGallery = (): SavedLook[] => {
   try {
     return JSON.parse(localStorage.getItem("peyton-fashion-gallery") || "[]");
@@ -282,6 +293,10 @@ function App() {
       <div className="wardrobe-section"><h2>Shoes</h2><div className="wardrobe-grid">{shoes.map((item) => <article className={`wardrobe-card ${!unlocked(item) ? "wardrobe-locked" : ""}`} key={`s${item.id}`}><div className="gallery-model"><KeriMannequin look={{ ...look, shoes: item.id }} />{!unlocked(item) && <span className="wardrobe-lock">🔒</span>}</div><strong>{item.name}</strong><small>{unlocked(item) ? "In your wardrobe" : unlockLabel(item.rule)}</small></article>)}</div></div>
       </section></main>
     );
+  if (screen === "mystery")
+    return (
+      <main className="app-shell"><Header back /><section className="collection-page mystery-page"><p className="eyebrow">DESIGNER REWARDS</p><h1>Mystery Wardrobes 🎁</h1><p>Complete briefs and collect stars to discover new themed fashion collections.</p><div className="mystery-grid">{mysteryWardrobes.map((box)=>{const open=progression.totalBestStars>=box.need;return <article className={`mystery-box ${open?"mystery-open":""}`} key={box.id}><span className="mystery-icon">{open?box.icon:"🔒"}</span><small>{open?"WARDROBE DISCOVERED":`${progression.totalBestStars}/${box.need} STARS`}</small><h2>{open?box.name:"Mystery Wardrobe"}</h2><p>{open?box.tagline:"Keep designing to reveal this collection."}</p><div className="mystery-rewards">{open?box.rewards:"? • ? • ? • ?"}</div></article>})}</div><p className="mystery-note">More collections will appear as Peyton's studio grows.</p></section></main>
+    );
   if (screen === "gallery")
     return (
       <main className="app-shell"><Header back /><section className="collection-page"><p className="eyebrow">FASHION GALLERY</p><h1>Peyton's Collection</h1><p>Every finished design is saved here.</p>{gallery.length === 0 ? <div className="empty-gallery"><span>♡</span><strong>No designs yet</strong><span>Create your first look in the Design Studio.</span><button className="finish-design" onClick={() => setScreen("design")}>Start Designing →</button></div> : <div className="gallery-grid">{gallery.map((item) => <article className="gallery-card" key={item.id}><div className="gallery-model"><KeriMannequin look={item.look} features={item.features ?? []} /></div><strong>{item.name}</strong><small>{item.challengeId && item.challengeId !== "free" && item.challengeStars != null && item.challengeScore != null ? `${"★".repeat(item.challengeStars)}${"☆".repeat(3 - item.challengeStars)} · ${item.challengeScore}% · ${fashionChallenges.find((c) => c.id === item.challengeId)?.title ?? "Challenge"}` : "💖 Free Design"}</small></article>)}</div>}</section></main>
@@ -303,6 +318,7 @@ function App() {
             <button className="studio-area gallery-area" onClick={() => setScreen("gallery")}><span className="area-icon">🖼️</span><span className="area-title">Fashion Gallery</span><span className="area-description">{gallery.length} looks saved</span></button>
             <button className="design-studio" onClick={() => setScreen("design")}><div className="mirror keri-home-mirror"><div className="mirror-shine" /><KeriMannequin look={look} features={features} /></div><div className="design-studio-label"><span className="design-icon">✦</span><div><strong>Design Studio</strong><small>Create a new fashion look</small></div><span className="arrow">→</span></div></button>
           </div>
+          <div className="mystery-home-card"><span>🎁</span><div><small>MYSTERY WARDROBES</small><strong>Unlock new fashion collections</strong><p>{mysteryWardrobes.filter((box)=>progression.totalBestStars>=box.need).length}/{mysteryWardrobes.length} wardrobes discovered</p></div><button onClick={()=>setScreen("mystery")}>Explore →</button></div>
           <ChallengeCard challenge={nextChallenge} progress={challengeProgress[nextChallenge.id]} onStart={() => startChallenge(nextChallenge)} />
         </section>
         <footer className="studio-footer"><span>♡ Designed for Peyton</span><span>✦ Create • Experiment • Express</span></footer>
