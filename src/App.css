@@ -1091,5 +1091,5 @@ button {
 .detail-choice-row{display:flex;gap:10px;justify-content:flex-start!important;overflow-x:auto;overflow-y:hidden;padding:4px 8px 10px;scroll-padding-left:8px}
 
 /* Exact crops from the accessory PNG alpha bounds */
-.jewellery-earrings .jewellery-preview img{width:2600px;left:calc(50% - 1310px);top:calc(50% - 585px);transform:none}
+.jewellery-earrings .jewellery-preview img{width:1435px;left:calc(50% - 723px);top:calc(50% - 322px);transform:none}
 .jewellery-bracelet .jewellery-preview img{width:5120px;left:calc(50% - 2183px);top:calc(50% - 2429px);transform:none}
