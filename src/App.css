@@ -1066,3 +1066,8 @@ button {
 /* Accessory cards crop the aligned full-canvas artwork around its useful region */
 .jewellery-choice .jewellery-preview{width:92px;height:78px}
 .jewellery-choice .jewellery-preview img{width:760px;left:50%;top:48%;transform:translate(-50%,-50%)}
+
+
+/* Standard shoe picker: crop the source canvas tightly around the feet */
+.standard-shoe-preview{position:relative;overflow:hidden}
+.standard-shoe-preview .standard-shoe-image{position:absolute;width:470px;height:auto;max-width:none;left:50%;bottom:-6px;transform:translateX(-50%);object-fit:contain}
