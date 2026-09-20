@@ -1085,3 +1085,11 @@ button {
 .jewellery-necklace .jewellery-preview img{width:2048px;left:calc(50% - 1032px);top:calc(50% - 540px);transform:none}
 .jewellery-earrings .jewellery-preview img{width:2048px;left:calc(50% - 1033px);top:calc(50% - 460px);transform:none}
 .jewellery-bracelet .jewellery-preview img{width:2048px;left:calc(50% - 873px);top:calc(50% - 972px);transform:none}
+
+
+/* Jewellery strip must begin at the left edge so the first card is always reachable */
+.detail-choice-row{display:flex;gap:10px;justify-content:flex-start!important;overflow-x:auto;overflow-y:hidden;padding:4px 8px 10px;scroll-padding-left:8px}
+
+/* Exact crops from the accessory PNG alpha bounds */
+.jewellery-earrings .jewellery-preview img{width:4096px;left:calc(50% - 2065px);top:calc(50% - 919px);transform:none}
+.jewellery-bracelet .jewellery-preview img{width:5120px;left:calc(50% - 2183px);top:calc(50% - 2429px);transform:none}
