@@ -1082,6 +1082,6 @@ button {
 /* Party Time accessory thumbnails: each aligned canvas needs its own body-area crop */
 .jewellery-choice .jewellery-preview{width:96px;height:88px}
 .jewellery-choice .jewellery-preview img{max-width:none;height:auto;object-fit:contain}
-.jewellery-necklace .jewellery-preview img{width:1180px;left:50%;top:54%;transform:translate(-50%,-50%)}
-.jewellery-earrings .jewellery-preview img{width:1450px;left:50%;top:45%;transform:translate(-50%,-50%)}
-.jewellery-bracelet .jewellery-preview img{width:1120px;left:43%;top:54%;transform:translate(-50%,-50%)}
+.jewellery-necklace .jewellery-preview img{width:2048px;left:calc(50% - 1032px);top:calc(50% - 540px);transform:none}
+.jewellery-earrings .jewellery-preview img{width:2048px;left:calc(50% - 1033px);top:calc(50% - 460px);transform:none}
+.jewellery-bracelet .jewellery-preview img{width:2048px;left:calc(50% - 873px);top:calc(50% - 972px);transform:none}
