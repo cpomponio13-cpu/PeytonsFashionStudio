@@ -8,14 +8,18 @@ export type GlamLook = {
   eyeColour:number
   top:number
   topStyle:number
+  topSet:number
   bottom:number
   bottomStyle:number
+  bottomSet:number
   dress:number
   dressStyle:number
   jacket:number
   jacketStyle:number
+  jacketSet:number
   shoes:number
   shoesStyle:number
+  shoesSet:number
   necklace:number
   necklaceSet:number
   earrings:number
@@ -25,8 +29,8 @@ export type GlamLook = {
 
 export const defaultGlamLook:GlamLook={
   skin:1,hairStyle:1,hairColour:1,eyes:1,eyeColour:1,
-  top:1,topStyle:1,bottom:1,bottomStyle:1,dress:0,dressStyle:1,
-  jacket:0,jacketStyle:1,shoes:1,shoesStyle:1,necklace:0,necklaceSet:1,earrings:0,earringsSet:1,bracelet:0
+  top:1,topStyle:1,topSet:1,bottom:1,bottomStyle:1,bottomSet:1,dress:0,dressStyle:1,
+  jacket:0,jacketStyle:1,jacketSet:1,shoes:1,shoesStyle:1,shoesSet:1,necklace:0,necklaceSet:1,earrings:0,earringsSet:1,bracelet:0
 }
 
 const layer=(src:string)=>src
@@ -35,7 +39,12 @@ const hairLayers=(style:number)=>style===4
  ? {back:layer('/glamgirl/hair/hair-4_1_back.png'),front:layer('/glamgirl/hair/hair-4_1_front.png')}
  : {front:layer(`/glamgirl/hair/hair-${Math.max(1,Math.min(9,style))}_1.png`)}
 
-const bottomAsset=(id:number)=>{
+const bottomAsset=(id:number,set=1,style=1)=>{
+ if(set===2){
+  if(id===101)return `/glamgirl/everyday-casual/trousers-2_${style}.png`
+  if(id===102)return `/glamgirl/everyday-casual/shorts-1_${style}.png`
+  if(id===103)return `/glamgirl/everyday-casual/leggings-1_${style}.png`
+ }
  if(id<=2)return `/glamgirl/trousers/trousers-${id}_1.png`
  if(id===3)return '/glamgirl/skirts/skirt-1_1.png'
  if(id===4)return '/glamgirl/shorts/shorts-1_1.png'
@@ -45,7 +54,9 @@ const bottomAsset=(id:number)=>{
  return '/glamgirl/trousers/trousers-1_1.png'
 }
 
-const topAsset=(id:number)=>`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
+const topAsset=(id:number,set=1,style=1)=>set===2
+ ? `/glamgirl/everyday-casual/top-${id}_${style}.png`
+ : `/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
 const partyDressStyles:Record<number,number[]>={4:[2,5,8],5:[3,7,12]}
 const dinnerDressStyles:Record<number,number[]>={6:[6,10],7:[8,14]}
 const partyShoeStyles:Record<number,number[]>={2:[4,8],4:[3,10]}
@@ -64,11 +75,15 @@ const glamLayers=(look:GlamLook)=>{
  const jacketId=Math.max(1,Math.min(6,look.jacket))
  const jacketStyle=look.jacketStyle||1
  const jacket=look.jacket>0
-  ? dinnerJacketStyles[jacketId]?.includes(jacketStyle)
-   ? `/glamgirl/dinner-out/jacket-${jacketId}_${jacketStyle}.png`
-   : `/glamgirl/jackets/jacket-${jacketId}_1.png`
+  ? look.jacketSet===2
+   ? `/glamgirl/everyday-casual/jacket-${jacketId}_${jacketStyle}.png`
+   : dinnerJacketStyles[jacketId]?.includes(jacketStyle)
+    ? `/glamgirl/dinner-out/jacket-${jacketId}_${jacketStyle}.png`
+    : `/glamgirl/jackets/jacket-${jacketId}_1.png`
   : undefined
- const shoes=variantAsset('shoes',Math.max(1,Math.min(6,look.shoes||1)),look.shoesStyle||1)
+ const shoes=look.shoesSet===2
+  ? `/glamgirl/everyday-casual/shoes-${Math.max(1,Math.min(6,look.shoes||1))}_${look.shoesStyle||1}.png`
+  : variantAsset('shoes',Math.max(1,Math.min(6,look.shoes||1)),look.shoesStyle||1)
  const hair=hairLayers(look.hairStyle)
  return [
   hair.back,
@@ -79,8 +94,8 @@ const glamLayers=(look:GlamLook)=>{
   '/glamgirl/face/eyebrows-1_1.png',
   '/glamgirl/face/cheeks-1_1.png',
   '/glamgirl/face/lips-1_1.png',
-  dress?undefined:bottomAsset(look.bottom),
-  dress?undefined:topAsset(look.top),
+  dress?undefined:bottomAsset(look.bottom,look.bottomSet||1,look.bottomStyle||1),
+  dress?undefined:topAsset(look.top,look.topSet||1,look.topStyle||1),
   dress,
   jacket,
   shoes,
