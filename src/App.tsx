@@ -253,7 +253,7 @@ function App() {
         onClick={() => isUnlocked && patch(type === "dress" ? { dress: item.id } : type === "top" || type === "bottom" ? { [type]: item.id, dress: 0 } : { [type]: item.id })}
         disabled={!isUnlocked}
       >
-        <span className="choice-preview">
+        <span className={`choice-preview ${type==="shoes"?"standard-shoe-preview":""}`}>
           <KeriMannequin look={preview({ [type]: item.id })} />
           {!isUnlocked && <span className="lock-cover">🔒<small>{unlockLabel(item.rule)}</small></span>}
         </span>
