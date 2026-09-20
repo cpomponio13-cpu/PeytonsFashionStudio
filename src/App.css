@@ -1053,3 +1053,8 @@ button {
 .jewellery-choice{min-width:108px}
 .jewellery-preview{position:relative;display:block;width:72px;height:72px;margin:0 auto 6px;border-radius:14px;background:linear-gradient(160deg,#fff,#f3eaf5);overflow:hidden}
 .jewellery-preview img{position:absolute;width:290px;height:auto;max-width:none;left:50%;top:50%;transform:translate(-50%,-50%);object-fit:contain}
+
+
+/* Party Time shoe cards crop the aligned source art to the feet */
+.shoe-preview{position:relative;display:block;width:96px;height:118px;margin:0 auto 5px;overflow:hidden;border-radius:13px;background:linear-gradient(160deg,#fff,#f0e8f4)}
+.shoe-preview img{position:absolute;width:96px;height:auto;max-width:none;left:0;bottom:0;object-fit:contain}
