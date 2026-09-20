@@ -254,7 +254,9 @@ function App() {
         disabled={!isUnlocked}
       >
         <span className={`choice-preview ${type==="shoes"?"standard-shoe-preview":""}`}>
-          <KeriMannequin look={preview({ [type]: item.id })} />
+          {type==="shoes"
+            ? <img className="standard-shoe-image" src={`/glamgirl/shoes/shoes-${item.id}_1.png`} alt="" />
+            : <KeriMannequin look={preview({ [type]: item.id })} />}
           {!isUnlocked && <span className="lock-cover">🔒<small>{unlockLabel(item.rule)}</small></span>}
         </span>
         <strong>{item.name}</strong>
