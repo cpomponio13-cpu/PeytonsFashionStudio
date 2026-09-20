@@ -107,6 +107,26 @@ const dinnerJewellery = [
   { key: "earrings" as const, value: 11, set: 2, name: "Dinner Earrings" },
   { key: "earrings" as const, value: 16, set: 2, name: "Evening Earrings" },
 ];
+const everydayCasual = {
+  tops: [
+    { id: 2, style: 7, name: "Relaxed Mint Top" },
+    { id: 3, style: 7, name: "Mint Cami" },
+    { id: 3, style: 19, name: "Sky Blue Cami" },
+  ],
+  bottoms: [
+    { id: 101, style: 1, name: "Blue Denim Jeans" },
+    { id: 101, style: 5, name: "Dark Denim Jeans" },
+    { id: 102, style: 10, name: "Mint Casual Shorts" },
+    { id: 102, style: 14, name: "Pink Casual Shorts" },
+    { id: 103, style: 15, name: "Charcoal Leggings" },
+  ],
+  jackets: [{ id: 4, style: 13, name: "Light Casual Jacket" }],
+  shoes: [
+    { id: 1, style: 2, name: "Black Casual Shoes" },
+    { id: 1, style: 8, name: "Navy Casual Shoes" },
+    { id: 5, style: 18, name: "Black Flats" },
+  ],
+};
 const mysteryWardrobes:{id:MysteryId;icon:string;name:string;tagline:string;need:number;rewards:string}[]=[
  {id:"party",icon:"🎉",name:"Party Time",tagline:"Birthday dinners, celebrations and sparkle.",need:2,rewards:"6 dress colourways • 4 shoe colourways • 6 jewellery pieces"},
  {id:"dinner",icon:"🍽️",name:"Dinner Out",tagline:"A polished collection for somewhere special.",need:4,rewards:"4 dress colourways • 2 blazers • 3 heels • 4 jewellery pieces"},
