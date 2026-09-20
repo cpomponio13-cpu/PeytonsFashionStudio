@@ -1077,3 +1077,11 @@ button {
 .wardrobe-shoe-preview{position:relative;overflow:hidden}
 .wardrobe-shoe-preview img{position:absolute;width:760px;height:auto;max-width:none;left:50%;bottom:-10px;transform:translateX(-50%);object-fit:contain}
 .wardrobe-locked .wardrobe-shoe-preview img{filter:grayscale(.15);opacity:.72}
+
+
+/* Party Time accessory thumbnails: each aligned canvas needs its own body-area crop */
+.jewellery-choice .jewellery-preview{width:96px;height:88px}
+.jewellery-choice .jewellery-preview img{max-width:none;height:auto;object-fit:contain}
+.jewellery-necklace .jewellery-preview img{width:1180px;left:50%;top:54%;transform:translate(-50%,-50%)}
+.jewellery-earrings .jewellery-preview img{width:1450px;left:50%;top:45%;transform:translate(-50%,-50%)}
+.jewellery-bracelet .jewellery-preview img{width:1120px;left:43%;top:54%;transform:translate(-50%,-50%)}
