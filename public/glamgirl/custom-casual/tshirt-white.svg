@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="2048" viewBox="0 0 2048 2048">
+  <defs>
+    <linearGradient id="fabric" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.48" stop-color="#f7f8fc"/>
+      <stop offset="1" stop-color="#eceef5"/>
+    </linearGradient>
+    <linearGradient id="shadeL" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#d8dce8" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="shadeR" x1="1" y1="0" x2="0" y2="0">
+      <stop offset="0" stop-color="#d8dce8" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+
+  <!-- Shirt body + sleeves registered to Glam Girl 2048x2048 canvas -->
+  <path d="
+    M 968 520
+    C 985 536 1008 546 1036 546
+    C 1064 546 1088 536 1105 520
+    C 1138 526 1168 535 1195 552
+    L 1260 604
+    L 1227 688
+    C 1204 680 1182 673 1160 666
+    L 1156 792
+    C 1154 844 1160 900 1172 955
+    C 1131 972 1084 980 1036 980
+    C 987 980 940 972 899 955
+    C 911 900 917 844 915 792
+    L 911 666
+    C 889 673 867 680 844 688
+    L 811 604
+    L 876 552
+    C 904 535 935 526 968 520 Z"
+    fill="url(#fabric)"
+    stroke="#cfd4df"
+    stroke-width="5"
+    stroke-linejoin="round"/>
+
+  <!-- Collar: front-only ribbing, no back-neck panel -->
+  <path d="M 969 520
+           C 989 548 1010 559 1036 559
+           C 1062 559 1084 548 1104 520"
+        fill="none" stroke="#c9ced9" stroke-width="16" stroke-linecap="round"/>
+  <path d="M 975 523
+           C 993 542 1012 550 1036 550
+           C 1060 550 1080 542 1098 523"
+        fill="none" stroke="#f9fafc" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Sleeve hems -->
+  <path d="M 821 612 L 848 678" stroke="#d5d9e3" stroke-width="5" opacity=".95"/>
+  <path d="M 1251 612 L 1224 678" stroke="#d5d9e3" stroke-width="5" opacity=".95"/>
+
+  <!-- Side shaping / folds -->
+  <path d="M 918 650 C 945 682 951 718 938 754
+           C 927 786 930 824 946 854"
+        fill="none" stroke="url(#shadeL)" stroke-width="18" stroke-linecap="round" filter="url(#soft)"/>
+  <path d="M 1154 650 C 1127 682 1121 718 1134 754
+           C 1145 786 1142 824 1126 854"
+        fill="none" stroke="url(#shadeR)" stroke-width="18" stroke-linecap="round" filter="url(#soft)"/>
+
+  <!-- Natural torso folds -->
+  <path d="M 953 770 C 997 755 1076 756 1120 774"
+        fill="none" stroke="#d8dce7" stroke-width="8" opacity=".45" stroke-linecap="round"/>
+  <path d="M 942 835 C 988 821 1082 822 1130 839"
+        fill="none" stroke="#d8dce7" stroke-width="7" opacity=".38" stroke-linecap="round"/>
+  <path d="M 930 902 C 981 891 1091 891 1142 905"
+        fill="none" stroke="#d8dce7" stroke-width="6" opacity=".34" stroke-linecap="round"/>
+
+  <!-- Bottom seam -->
+  <path d="M 902 949 C 945 964 989 970 1036 970
+           C 1083 970 1127 964 1170 949"
+        fill="none" stroke="#cfd4df" stroke-width="5" opacity=".95"/>
+</svg>
