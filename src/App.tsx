@@ -289,17 +289,28 @@ function App() {
   );
   const GarmentChoice = ({ item, type }: { item: Garment; type: "top" | "bottom" | "dress" | "jacket" | "shoes" }) => {
     const isUnlocked = unlocked(item),
-      selected = look[type] === item.id;
+      selected = look[type] === item.id && (
+        type === "top" ? look.topSet === 1 :
+        type === "bottom" ? look.bottomSet === 1 :
+        type === "jacket" ? look.jacketSet === 1 :
+        type === "shoes" ? look.shoesSet === 1 : true
+      );
+    const standardChange: Partial<KeriLook> =
+      type === "top" ? { top: item.id, topStyle: 1, topSet: 1, dress: 0 } :
+      type === "bottom" ? { bottom: item.id, bottomStyle: 1, bottomSet: 1, dress: 0 } :
+      type === "jacket" ? { jacket: item.id, jacketStyle: 1, jacketSet: 1 } :
+      type === "shoes" ? { shoes: item.id, shoesStyle: 1, shoesSet: 1 } :
+      { dress: item.id, dressStyle: 1 };
     return (
       <button
         className={`visual-choice ${selected ? "selected" : ""} ${!isUnlocked ? "locked-choice" : ""}`}
-        onClick={() => isUnlocked && patch(type === "dress" ? { dress: item.id } : type === "top" || type === "bottom" ? { [type]: item.id, dress: 0 } : { [type]: item.id })}
+        onClick={() => isUnlocked && patch(standardChange)}
         disabled={!isUnlocked}
       >
         <span className={`choice-preview ${type==="shoes"?"standard-shoe-preview":""}`}>
           {type==="shoes"
             ? <img className="standard-shoe-image" src={`/glamgirl/shoes/shoes-${item.id}_1.png`} alt="" />
-            : <KeriMannequin look={preview({ [type]: item.id })} />}
+            : <KeriMannequin look={preview(standardChange)} />}
           {!isUnlocked && <span className="lock-cover">🔒<small>{unlockLabel(item.rule)}</small></span>}
         </span>
         <strong>{item.name}</strong>
