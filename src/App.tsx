@@ -138,23 +138,42 @@ const mysteryWardrobes:{id:MysteryId;icon:string;name:string;tagline:string;need
  {id:"fantasy",icon:"👑",name:"Fantasy Fashion",tagline:"The designer vault where anything can happen.",need:15,rewards:"Capes • statement pieces • metallics • surprise accessories"},
 ];
 
+const safeStorageGet = (key: string, fallback: string) => {
+  try {
+    return typeof window !== "undefined" && window.localStorage
+      ? window.localStorage.getItem(key) || fallback
+      : fallback;
+  } catch {
+    return fallback;
+  }
+};
+const safeStorageSet = (key: string, value: string) => {
+  try {
+    if (typeof window !== "undefined" && window.localStorage) window.safeStorageSet(key, value);
+  } catch {
+    // Safari private/restricted storage must never crash the game.
+  }
+};
 const readGallery = (): SavedLook[] => {
   try {
-    return JSON.parse(localStorage.getItem("peyton-fashion-gallery") || "[]");
+    const value = JSON.parse(safeStorageGet("peyton-fashion-gallery", "[]"));
+    return Array.isArray(value) ? value : [];
   } catch {
     return [];
   }
 };
 const readRecipes = (): string[] => {
   try {
-    return JSON.parse(localStorage.getItem("peyton-colour-recipes") || "[]");
+    const value = JSON.parse(safeStorageGet("peyton-colour-recipes", "[]"));
+    return Array.isArray(value) ? value : [];
   } catch {
     return [];
   }
 };
 const readFeatures = (): string[] => {
   try {
-    return JSON.parse(localStorage.getItem("peyton-selected-features") || "[]");
+    const value = JSON.parse(safeStorageGet("peyton-selected-features", "[]"));
+    return Array.isArray(value) ? value : [];
   } catch {
     return [];
   }
@@ -172,7 +191,7 @@ function App() {
   const [screen, setScreen] = useState<Screen>("home"),
     [tab, setTab] = useState<Tab>("clothing"),
     [clothingCategory, setClothingCategory] = useState<Garment["category"]>("top"),
-    [openedMysteries, setOpenedMysteries] = useState<MysteryOpened>(()=>{try{return JSON.parse(localStorage.getItem("pfs-mystery-opened")||"{}")}catch{return {}}}),
+    [openedMysteries, setOpenedMysteries] = useState<MysteryOpened>(()=>{try{const value=JSON.parse(safeStorageGet("pfs-mystery-opened","{}")); return value && typeof value==="object" && !Array.isArray(value) ? value : {}}catch{return {}}}),
     [mysteryReveal, setMysteryReveal] = useState<(typeof mysteryWardrobes)[number]|null>(null),
     [look, setLook] = useState<KeriLook>(defaultKeriLook),
     [gallery, setGallery] = useState<SavedLook[]>(readGallery),
@@ -212,7 +231,7 @@ function App() {
   const reset = () => {
     setLook(defaultKeriLook);
     setFeatures([]);
-    localStorage.setItem("peyton-selected-features", "[]");
+    safeStorageSet("peyton-selected-features", "[]");
   };
   const preview = (change: Partial<KeriLook>) => ({ ...look, ...change });
   const syncFeatures = () => setFeatures(readFeatures());
@@ -228,7 +247,7 @@ function App() {
         ? [...features, id]
         : features;
     setFeatures(next);
-    localStorage.setItem("peyton-selected-features", JSON.stringify(next));
+    safeStorageSet("peyton-selected-features", JSON.stringify(next));
   };
   const startChallenge = (next: FashionChallenge) => {
     setChallenge(next);
@@ -268,7 +287,7 @@ function App() {
       .filter((r) => !meetsUnlock(r.rule, progression) && meetsUnlock(r.rule, nextProgression))
       .map((r) => `✨ ${r.name}`);
     setGallery(next);
-    localStorage.setItem("peyton-fashion-gallery", JSON.stringify(next));
+    safeStorageSet("peyton-fashion-gallery", JSON.stringify(next));
     setFinished(saved);
     setNewUnlock([...garmentUnlocks, ...colourUnlocks, ...featureUnlocks].join(" • ") || null);
     setScreen("finished");
@@ -276,7 +295,7 @@ function App() {
   const openMystery=(box:(typeof mysteryWardrobes)[number])=>{
     if(progression.totalBestStars<box.need||openedMysteries[box.id])return;
     const next={...openedMysteries,[box.id]:true}; setOpenedMysteries(next);
-    localStorage.setItem("pfs-mystery-opened",JSON.stringify(next)); setMysteryReveal(box);
+    safeStorageSet("pfs-mystery-opened",JSON.stringify(next)); setMysteryReveal(box);
   };
 
   const Header = ({ back = false }: { back?: boolean }) => (
