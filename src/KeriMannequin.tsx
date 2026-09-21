@@ -33,7 +33,7 @@ export const defaultGlamLook:GlamLook={
   jacket:0,jacketStyle:1,jacketSet:1,shoes:1,shoesStyle:1,shoesSet:1,necklace:0,necklaceSet:1,earrings:0,earringsSet:1,bracelet:0
 }
 
-const asset=(src:string)=>`${import.meta.env.BASE_URL}${src.replace(/^\\//,'')}`
+const asset=(src:string)=>`${import.meta.env.BASE_URL}${src.replace(/^\//,'')}`
 
 const hairLayers=(style:number)=>style===4
  ? {back:asset('/glamgirl/hair/hair-4_1_back.png'),front:asset('/glamgirl/hair/hair-4_1_front.png')}
