@@ -57,3 +57,9 @@
     top:-79px!important;
   }
 }
+
+/* Custom casual tee is a standalone transparent asset rather than a registered 2048px Glam Girl layer. */
+.custom-tee-layer{
+  transform:translateY(-13.5%) scale(.33);
+  transform-origin:50% 50%;
+}
