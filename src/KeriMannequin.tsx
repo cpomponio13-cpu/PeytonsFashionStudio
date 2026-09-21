@@ -54,9 +54,11 @@ const bottomAsset=(id:number,set=1,style=1)=>{
  return '/glamgirl/trousers/trousers-1_1.png'
 }
 
-const topAsset=(id:number,set=1,style=1)=>set===2
- ? `/glamgirl/everyday-casual/top-${id}_${style}.png`
- : `/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
+const topAsset=(id:number,set=1,style=1)=>set===3
+ ? '/glamgirl/custom-casual/tshirt-white.png'
+ : set===2
+  ? `/glamgirl/everyday-casual/top-${id}_${style}.png`
+  : `/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`
 const partyDressStyles:Record<number,number[]>={4:[2,5,8],5:[3,7,12]}
 const dinnerDressStyles:Record<number,number[]>={6:[6,10],7:[8,14]}
 const partyShoeStyles:Record<number,number[]>={2:[4,8],4:[3,10]}
