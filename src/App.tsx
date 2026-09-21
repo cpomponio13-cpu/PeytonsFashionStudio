@@ -181,12 +181,12 @@ function App() {
     [features, setFeatures] = useState<string[]>(readFeatures),
     [challenge, setChallenge] = useState<FashionChallenge>(fashionChallenges[0]);
   const progression = getProgression(gallery);
+  const unlocked = (g: Garment) => meetsUnlock(g.rule, progression);
   const permanentCasualCount = everydayCasual.tops.length + everydayCasual.bottoms.length + everydayCasual.jackets.length + everydayCasual.shoes.length;
   const wardrobeOwnedCount = allGarments.filter(unlocked).length + permanentCasualCount;
   const wardrobeTotalCount = allGarments.length + permanentCasualCount;
   const partyOpened = !!openedMysteries.party;
   const dinnerOpened = !!openedMysteries.dinner;
-  const unlocked = (g: Garment) => meetsUnlock(g.rule, progression);
   const nextReward = nearestLockedReward([
     ...wardrobeUnlocks.map((x) => ({ name: x.name, icon: "👗", rule: x.rule })),
     ...colourRewards.map((x) => ({ name: x.name, icon: "🎨", rule: x.rule })),
