@@ -117,6 +117,6 @@ type Props={ look?:GlamLook; className?:string; portrait?:boolean; features?:str
 
 export default function KeriMannequin({look=defaultGlamLook,className='',portrait=false}:Props){
  return <div className={`keri-model glam-model ${portrait?'keri-portrait':''} ${className}`} role="img" aria-label="Fashion model">
-  {glamLayers(look).map((src,index)=><img key={`${src}-${index}`} className="keri-layer glam-layer" src={src} alt="" aria-hidden={index!==1}/>)}
+  {glamLayers(look).map((src,index)=><img key={`${src}-${index}`} className={`keri-layer glam-layer ${src.includes("tshirt-white.png")?"custom-tee-layer":""}`} src={src} alt="" aria-hidden={index!==1}/>)}
  </div>
 }
