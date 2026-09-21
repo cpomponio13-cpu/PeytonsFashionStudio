@@ -149,7 +149,7 @@ const safeStorageGet = (key: string, fallback: string) => {
 };
 const safeStorageSet = (key: string, value: string) => {
   try {
-    if (typeof window !== "undefined" && window.localStorage) window.safeStorageSet(key, value);
+    if (typeof window !== "undefined" && window.localStorage) window.localStorage.setItem(key, value);
   } catch {
     // Safari private/restricted storage must never crash the game.
   }
