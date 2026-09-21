@@ -109,9 +109,10 @@ const dinnerJewellery = [
 ];
 const everydayCasual = {
   tops: [
-    { id: 2, style: 7, name: "Relaxed Mint Top" },
-    { id: 3, style: 7, name: "Mint Cami" },
-    { id: 3, style: 19, name: "Sky Blue Cami" },
+    { id: 201, style: 1, set: 3, name: "White T-Shirt" },
+    { id: 2, style: 7, set: 2, name: "Relaxed Mint Top" },
+    { id: 3, style: 7, set: 2, name: "Mint Cami" },
+    { id: 3, style: 19, set: 2, name: "Sky Blue Cami" },
   ],
   bottoms: [
     { id: 101, style: 1, name: "Blue Denim Jeans" },
@@ -431,7 +432,7 @@ function App() {
             </div>}
             {tab === "clothing" && <div className="details-drawer">
               <div className="details-heading"><b>EVERYDAY CASUAL</b><span>Always available · garden, outdoor and weekend looks</span></div>
-              <div className="option-group visual-group"><b>CASUAL TOPS</b><div className="visual-choice-row">{everydayCasual.tops.map((v)=><button key={"casual-top-"+v.id+"-"+v.style} className={"visual-choice "+(look.top===v.id&&look.topStyle===v.style&&look.topSet===2?"selected":"")} onClick={()=>patch({top:v.id,topStyle:v.style,topSet:2,dress:0})}><span className="choice-preview"><KeriMannequin look={preview({top:v.id,topStyle:v.style,topSet:2,dress:0})}/></span><strong>{v.name}</strong></button>)}</div></div>
+              <div className="option-group visual-group"><b>CASUAL TOPS</b><div className="visual-choice-row">{everydayCasual.tops.map((v)=>{const set=v.set??2;return <button key={"casual-top-"+v.id+"-"+v.style+"-"+set} className={"visual-choice "+(look.top===v.id&&look.topStyle===v.style&&look.topSet===set?"selected":"")} onClick={()=>patch({top:v.id,topStyle:v.style,topSet:set,dress:0})}><span className="choice-preview"><KeriMannequin look={preview({top:v.id,topStyle:v.style,topSet:set,dress:0})}/></span><strong>{v.name}</strong></button>})}</div></div>
               <div className="option-group visual-group"><b>CASUAL BOTTOMS</b><div className="visual-choice-row">{everydayCasual.bottoms.map((v)=><button key={"casual-bottom-"+v.id+"-"+v.style} className={"visual-choice "+(look.bottom===v.id&&look.bottomStyle===v.style&&look.bottomSet===2?"selected":"")} onClick={()=>patch({bottom:v.id,bottomStyle:v.style,bottomSet:2,dress:0})}><span className="choice-preview"><KeriMannequin look={preview({bottom:v.id,bottomStyle:v.style,bottomSet:2,dress:0})}/></span><strong>{v.name}</strong></button>)}</div></div>
               <div className="option-group visual-group"><b>LIGHT LAYER</b><div className="visual-choice-row">{everydayCasual.jackets.map((v)=><button key={"casual-jacket-"+v.id+"-"+v.style} className={"visual-choice "+(look.jacket===v.id&&look.jacketStyle===v.style&&look.jacketSet===2?"selected":"")} onClick={()=>patch({jacket:v.id,jacketStyle:v.style,jacketSet:2})}><span className="choice-preview"><KeriMannequin look={preview({jacket:v.id,jacketStyle:v.style,jacketSet:2})}/></span><strong>{v.name}</strong></button>)}</div></div>
               <div className="option-group visual-group"><b>CASUAL SHOES</b><div className="visual-choice-row">{everydayCasual.shoes.map((v)=>{const src="/glamgirl/everyday-casual/shoes-"+v.id+"_"+v.style+".png";return <button key={"casual-shoe-"+v.id+"-"+v.style} className={"visual-choice shoe-variant-choice "+(look.shoes===v.id&&look.shoesStyle===v.style&&look.shoesSet===2?"selected":"")} onClick={()=>patch({shoes:v.id,shoesStyle:v.style,shoesSet:2})}><span className="shoe-preview"><img src={src} alt="" /></span><strong>{v.name}</strong></button>})}</div></div>
