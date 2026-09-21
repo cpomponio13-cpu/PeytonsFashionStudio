@@ -1093,3 +1093,175 @@ button {
 /* Exact crops from the accessory PNG alpha bounds */
 .jewellery-earrings .jewellery-preview img{width:1435px;left:calc(50% - 723px);top:calc(50% - 322px);transform:none}
 .jewellery-bracelet .jewellery-preview img{width:5120px;left:calc(50% - 2183px);top:calc(50% - 2429px);transform:none}
+
+
+/* Design Studio desktop workspace — wardrobe browser + persistent mannequin */
+@media (min-width: 851px) {
+  .designer-page {
+    width: min(1440px, calc(100% - 32px));
+    display: grid;
+    grid-template-columns: 150px minmax(480px, 1fr) 390px 230px;
+    grid-template-rows: auto minmax(540px, auto) auto auto;
+    gap: 18px;
+    align-items: start;
+  }
+
+  .designer-challenge {
+    grid-column: 1 / -1;
+    width: min(760px, 100%);
+    max-width: none;
+    margin: 0 auto;
+  }
+
+  .designer-workspace,
+  .design-drawer {
+    display: contents;
+  }
+
+  .drawer-tabs {
+    grid-column: 1;
+    grid-row: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 14px 10px;
+    border: 1px solid #eadfea;
+    border-radius: 22px;
+    background: #ffffffd9;
+    box-shadow: 0 12px 34px #4a2d5b12;
+    position: sticky;
+    top: 18px;
+  }
+
+  .drawer-tabs button {
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 12px;
+    border-radius: 14px;
+    text-align: left;
+  }
+
+  .drawer-tabs button.active {
+    background: linear-gradient(135deg, #f7dcec, #eee4f7);
+    color: #5f3474;
+  }
+
+  .drawer-options {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 540px;
+    max-height: 720px;
+    display: block;
+    padding: 18px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid #eadfea;
+    border-radius: 24px;
+    background: #ffffffe8;
+    box-shadow: 0 12px 34px #4a2d5b12;
+  }
+
+  .designer-mirror {
+    grid-column: 3;
+    grid-row: 2;
+    width: 370px;
+    height: 540px;
+    position: sticky;
+    top: 18px;
+  }
+
+  .designer-summary {
+    grid-column: 4;
+    grid-row: 2;
+    position: sticky;
+    top: 18px;
+    min-height: 170px;
+    border: 1px solid #eadfea;
+    background: #ffffffe8;
+    box-shadow: 0 12px 34px #4a2d5b12;
+  }
+
+  .designer-summary::before {
+    content: "YOUR LOOK";
+    display: block;
+    margin-bottom: 8px;
+    color: #a05a8e;
+    font-size: .68rem;
+    font-weight: 900;
+    letter-spacing: .13em;
+  }
+
+  .designer-summary > small {
+    display: none;
+  }
+
+  .designer-tip {
+    grid-column: 4;
+    grid-row: 2;
+    align-self: end;
+    margin-bottom: 8px;
+    border: 1px solid #eadfea;
+    background: #fff8fb;
+  }
+
+  .clothing-category-tabs {
+    justify-content: flex-start;
+    padding: 0 0 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #eee3f0;
+  }
+
+  .clothing-category-tabs button {
+    padding: 9px 14px;
+  }
+
+  .drawer-options .visual-choice-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 12px;
+    overflow: visible;
+  }
+
+  .drawer-options .visual-choice {
+    width: 100%;
+    height: 178px;
+  }
+
+  .drawer-options .choice-preview,
+  .drawer-options .shoe-preview {
+    width: 100%;
+    height: 136px;
+  }
+
+  .drawer-options .details-drawer {
+    width: 100%;
+  }
+
+  .drawer-options .details-drawer + .details-drawer {
+    margin-top: 18px;
+  }
+
+  .drawer-options .detail-choice-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+    gap: 12px;
+    overflow: visible;
+  }
+
+  .designer-actions {
+    grid-column: 3 / 5;
+    grid-row: 3;
+    padding-top: 0;
+    justify-content: stretch;
+  }
+
+  .designer-actions button {
+    flex: 1;
+  }
+
+  .asset-credit {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
+}
