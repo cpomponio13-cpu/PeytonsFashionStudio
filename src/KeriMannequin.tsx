@@ -55,7 +55,7 @@ const bottomAsset=(id:number,set=1,style=1)=>{
 }
 
 const topAsset=(id:number,set=1,style=1)=>set===3
- ? asset('/glamgirl/custom-casual/tshirt-white.png')
+ ? asset('/glamgirl/custom-casual/tshirt-white.svg')
  : set===2
   ? asset(`/glamgirl/everyday-casual/top-${id}_${style}.png`)
   : asset(`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`)
