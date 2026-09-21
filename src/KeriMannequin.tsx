@@ -33,20 +33,19 @@ export const defaultGlamLook:GlamLook={
   jacket:0,jacketStyle:1,jacketSet:1,shoes:1,shoesStyle:1,shoesSet:1,necklace:0,necklaceSet:1,earrings:0,earringsSet:1,bracelet:0
 }
 
-const asset=(src:string)=>`${import.meta.env.BASE_URL}${src.replace(/^\//,'')}`
-const layer=(src:string)=>asset(src)
+const asset=(src:string)=>`${import.meta.env.BASE_URL}${src.replace(/^\\//,'')}`
 
 const hairLayers=(style:number)=>style===4
- ? {back:layer('/glamgirl/hair/hair-4_1_back.png'),front:layer('/glamgirl/hair/hair-4_1_front.png')}
- : {front:layer(asset(`/glamgirl/hair/hair-${Math.max(1,Math.min(9,style))}_1.png`)}
+ ? {back:asset('/glamgirl/hair/hair-4_1_back.png'),front:asset('/glamgirl/hair/hair-4_1_front.png')}
+ : {front:asset(`/glamgirl/hair/hair-${Math.max(1,Math.min(9,style))}_1.png`)}
 
 const bottomAsset=(id:number,set=1,style=1)=>{
  if(set===2){
-  if(id===101)return asset(asset(`/glamgirl/everyday-casual/trousers-2_${style}.png`)
-  if(id===102)return asset(asset(`/glamgirl/everyday-casual/shorts-1_${style}.png`)
-  if(id===103)return asset(asset(`/glamgirl/everyday-casual/leggings-1_${style}.png`)
+  if(id===101)return asset(`/glamgirl/everyday-casual/trousers-2_${style}.png`)
+  if(id===102)return asset(`/glamgirl/everyday-casual/shorts-1_${style}.png`)
+  if(id===103)return asset(`/glamgirl/everyday-casual/leggings-1_${style}.png`)
  }
- if(id<=2)return asset(asset(`/glamgirl/trousers/trousers-${id}_1.png`)
+ if(id<=2)return asset(`/glamgirl/trousers/trousers-${id}_1.png`)
  if(id===3)return asset('/glamgirl/skirts/skirt-1_1.png')
  if(id===4)return asset('/glamgirl/shorts/shorts-1_1.png')
  if(id===5)return asset('/glamgirl/skirts/skirt-2_1.png')
@@ -58,19 +57,24 @@ const bottomAsset=(id:number,set=1,style=1)=>{
 const topAsset=(id:number,set=1,style=1)=>set===3
  ? asset('/glamgirl/custom-casual/tshirt-white.png')
  : set===2
-  ? asset(asset(`/glamgirl/everyday-casual/top-${id}_${style}.png`)
-  : asset(asset(`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`)
+  ? asset(`/glamgirl/everyday-casual/top-${id}_${style}.png`)
+  : asset(`/glamgirl/tops/top-${Math.max(1,Math.min(6,id))}_1.png`)
+
 const partyDressStyles:Record<number,number[]>={4:[2,5,8],5:[3,7,12]}
 const dinnerDressStyles:Record<number,number[]>={6:[6,10],7:[8,14]}
 const partyShoeStyles:Record<number,number[]>={2:[4,8],4:[3,10]}
 const dinnerShoeStyles:Record<number,number[]>={6:[1,6,17]}
 const dinnerJacketStyles:Record<number,number[]>={3:[3,4]}
+
 const variantAsset=(kind:'dress'|'shoes',id:number,style:number)=>{
  const dinnerAllowed=kind==='dress'?dinnerDressStyles[id]:dinnerShoeStyles[id]
- if(dinnerAllowed?.includes(style))return asset(asset(`/glamgirl/dinner-out/${kind}-${id}_${style}.png`)
+ if(dinnerAllowed?.includes(style))return asset(`/glamgirl/dinner-out/${kind}-${id}_${style}.png`)
  const partyAllowed=kind==='dress'?partyDressStyles[id]:partyShoeStyles[id]
- return partyAllowed?.includes(style)?asset(asset(`/glamgirl/party-time/${kind}-${id}_${style}.png`):
-  kind==='dress'?asset(asset(`/glamgirl/dresses/dress-${id}_1.png`):asset(asset(`/glamgirl/shoes/shoes-${id}_1.png`)
+ return partyAllowed?.includes(style)
+  ? asset(`/glamgirl/party-time/${kind}-${id}_${style}.png`)
+  : kind==='dress'
+   ? asset(`/glamgirl/dresses/dress-${id}_1.png`)
+   : asset(`/glamgirl/shoes/shoes-${id}_1.png`)
 }
 
 const glamLayers=(look:GlamLook)=>{
