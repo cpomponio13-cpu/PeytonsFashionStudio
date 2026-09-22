@@ -1265,3 +1265,26 @@ button {
     grid-row: 4;
   }
 }
+
+
+/* Mobile Design Studio: keep garment cards in a clean two-column browser. */
+@media (max-width: 560px) {
+  .drawer-options .visual-choice-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    overflow: visible;
+  }
+  .drawer-options .visual-choice {
+    width: 100%;
+    min-width: 0;
+  }
+  .drawer-options .choice-preview,
+  .drawer-options .shoe-preview {
+    width: 100%;
+  }
+  .drawer-options .option-group {
+    width: 100%;
+  }
+}
