@@ -1288,3 +1288,27 @@ button {
     width: 100%;
   }
 }
+
+
+/* Lightweight garment thumbnails: render only the garment artwork in chooser cards.
+   This avoids mounting many full 2048px mannequin layer stacks on iOS Safari. */
+.garment-thumb,
+.hair-thumb {
+  position: relative;
+  overflow: hidden;
+}
+.garment-thumb-image,
+.hair-thumb img {
+  position: absolute;
+  width: 470px;
+  height: auto;
+  max-width: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+}
+.hair-thumb img {
+  width: 390px;
+  top: 34%;
+}
