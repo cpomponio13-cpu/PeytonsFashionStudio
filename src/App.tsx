@@ -138,7 +138,7 @@ const mysteryWardrobes:{id:MysteryId;icon:string;name:string;tagline:string;need
  {id:"fantasy",icon:"👑",name:"Fantasy Fashion",tagline:"The designer vault where anything can happen.",need:15,rewards:"Capes • statement pieces • metallics • surprise accessories"},
 ];
 
-const appAsset = (src: string) => `${import.meta.env.BASE_URL}${src.replace(/^\\//, "")}`;
+const appAsset = (src: string) => `${import.meta.env.BASE_URL}${src.replace(/^\//, "")}`;
 const standardGarmentPreview = (item: Garment) => {
   if (item.category === "top") return appAsset(`/glamgirl/tops/top-${Math.max(1, Math.min(6, item.id))}_1.png`);
   if (item.category === "bottom") {
